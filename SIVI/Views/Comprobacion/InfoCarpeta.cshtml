@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "InfoCarpeta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    var idUsuario =@ViewBag.id;
+    var idArea = @ViewBag.idArea;
+    var idComision =@ViewBag.idComision;
+        var usuarioCaptura = @ViewBag.usuarioCaptura;
+</script>
+<div ng-controller="ComprobacionController as vm">
+    <div class="container">
+        <form ng-submit="">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>COMPLEMENTO DE PAGO.- Pega la ruta en donde se encuentran los archivos XML</label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" ng-required="true" ng-model="vm.ComplementoXML" />
+                </div>
+                <div class="col-md-1">
+                    <button type="button" ng-click="vm.InfoComplemento()" class="btn btn-success">Generar</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>LAYOUT ASF.- Pega la ruta en donde se encuentran los archivos XML</label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" ng-required="true" ng-model="vm.RutaXML" />
+                </div>
+                <div class="col-md-1">
+                    <button type="button" ng-click="vm.InfoCarpeta()" class="btn btn-success">Generar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/app/controladores/ComprobacionController.js"></script>
+    <script src="~/Scripts/app/factory/ComprobacionFactory.js"></script>
+}
+

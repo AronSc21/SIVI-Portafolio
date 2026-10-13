@@ -1,0 +1,809 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Comprobacion";
+}
+<script>
+    var idUsuario ='@ViewBag.id';
+    var idArea = @ViewBag.idArea;
+    var idComision =@ViewBag.idComision;
+    var usuarioCaptura = @ViewBag.usuarioCaptura;
+</script>
+<style>
+    /* Style the tab */
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+
+            /* Change background color of buttons on hover */
+            .tab button:hover {
+                background-color: #ddd;
+            }
+
+            /* Create an active/current tablink class */
+            .tab button.active {
+                background-color: #ccc;
+            }
+    .tablinks{
+        font-size:small;
+    }
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+    }
+</style>
+<div ng-controller="ComprobacionController as vm"> 
+    @*<nav class="nav">
+            <a class="nav-link active" aria-current="page" href="#">Active</a>
+            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </nav>*@
+    <div class="container" ng-init="vm.Iniciar()">
+        <form ng-submit="vm.GuardarComprobacion()">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2>ANEXO 3</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="row form-group">
+                        <div class="col-md-3">
+                            <label class="control-label">NÚMERO DE OFICIO:</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" ng-model="vm.noOficio" ng-required="true" class="form-control" />
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-info" ng-click="vm.ObtenerSolicitud()" ng-disabled="vm.noOficio==null">Buscar</button>
+                        </div>
+                    </div><br />
+                    <div class="row form-group" ng-hide="vm.encontrado==null||vm.encontrado==false">
+                        <div class="col-md-5">
+                            <lable>
+                                NOMBRE DEL COMISIONADO (A):
+                            </lable>
+                            <input type="text" ng-model="vm.nombre" ng-disabled="true" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                AREA DE ADSCRIPCIÓN:
+                            </label>
+                            <input type="text" ng-model="vm.area" ng-disabled="true" class="form-control" />
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                CARGO:
+                            </label>
+                            <input type="text" ng-model="vm.cargo" ng-disabled="true" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-hide="vm.encontrado==null||vm.encontrado==false">
+                        <div class="col-md-2">
+                            <lable>
+                                OFICIO No.
+                            </lable>
+                            <input type="text" ng-model="vm.Comision.noOficio" ng-required="true" ng-disabled="true" class="form-control" />
+                            <lable>
+                                FECHA OFICIO:
+                            </lable>
+                            <input type="date" ng-model="vm.Comision.fechaOficio" ng-required="true" ng-disabled="true" class="form-control" />
+                        </div>
+                        <div class="col-md-7">
+                            <label>
+                                OBJETIVO DE LA COMISIÓN:
+                            </label>
+                            <textarea type="text" rows="4" ng-model="vm.Comision.objetivoComision" ng-disabled="true" ng-required="true" class="form-control"></textarea>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                QUIÉN COMSIONA?
+                            </label>
+                            <select ng-model="vm.Comision.jefeComision" ng-required="true" ng-disabled="true" class="form-control">
+                                <option ng-repeat="c in vm.Jefes" value="{{c.NoEmpleado}}">{{c.Nombre}}</option>
+                            </select>
+                            <label>
+                                LUGAR DE LA COMISIÓN:
+                            </label>
+                            <input type="text" ng-model="vm.Comision.lugarComision" ng-required="true" ng-disabled="true" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-hide="vm.encontrado==null||vm.encontrado==false">
+                        <div class="col-md-2">
+                            <lable>
+                                FECHA DE INICIO DE COMISIÓN:
+                            </lable>
+                            <input type="date" ng-model="vm.Comision.fechaInicio" ng-required="true" ng-disabled="true" class="form-control" />
+                        </div>
+                        <div class="col-md-7">
+                            <label>
+                                PRINCIPALES ACCIONES A REALIZAR:
+                            </label>
+                            <textarea type="text" rows="4" ng-model="vm.Comision.principalesAcciones" ng-disabled="true" ng-required="true" class="form-control"></textarea>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                FECHA DE TÉRMINO DE COMISIÓN
+                            </label>
+                            <input type="date" ng-model="vm.Comision.fechaFinal" ng-required="true" ng-disabled="true" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-hide="vm.encontrado==null||vm.encontrado==false">
+                        <div class="col-md-4">
+                            <label>
+                                ACTIVIDADES REALIZADAS:
+                            </label>
+                            <textarea type="text" rows="4" ng-model="vm.Comision.actividadesrealizadas" ng-disabled="!vm.PuedeEditar" ng-required="true" class="form-control"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                RESULTADOS OBTENIDOS:
+                            </label>
+                            <textarea type="text" rows="4" ng-model="vm.Comision.resultadosObtenidos" ng-disabled="!vm.PuedeEditar" ng-required="true" class="form-control"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                CONTRIBUCIONES A LA INSTITUCIÓN Y CONCLUSIONES:
+                            </label>
+                            <textarea type="text" rows="4" ng-model="vm.Comision.contribuciones" ng-disabled="!vm.PuedeEditar" ng-required="true" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-hide="vm.encontrado==null||vm.encontrado==false">
+                        <div class="col-md-4">
+                            <label>
+                                FECHA DE COMPROBACIÓN:
+                            </label>
+                            <input type="date" ng-model="vm.Comision.fechaComprobacion" ng-disabled="!vm.PuedeEditar" ng-required="true" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>¿ES REPOSICIÓN?</label>
+                            <input type="checkbox" ng-model="vm.Comision.reposicion" ng-disabled="!vm.PuedeEditar" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <b>IMPORTE DE RECURSOS ASIGNADOS:  (  A  )</b>
+                            <input type="number" ng-model="vm.total" ng-disabled="true" value="{{vm.Monto.hospedaje+vm.Monto.alimentacion+vm.Monto.terrestre+vm.Monto.combustible+vm.Monto.peaje+vm.Monto.traslados+vm.Monto.otrosGastos}}" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="panel panel-primary" ng-hide="vm.encontrado==null||vm.encontrado==false">
+                <div class="panel-heading">
+                    <h4 style="text-align:center">DESGLOSE DE EROGACIONES COMPROBADAS</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="tab">
+                        <button type="button" class="tablinks active" ng-click="" onclick="openCity(event, '01')" id="btn_01">HOSPEDAJE</button>
+                        <button type="button" class="tablinks" ng-click="" onclick="openCity(event, '02')">ALIMENTACIÓN</button>
+                        <button type="button" class="tablinks" ng-click="" onclick="openCity(event, '03')">AVIÓN /AUTOBUS</button>
+                        <button type="button" class="tablinks" ng-click="" onclick="openCity(event, '04')">COMBUSTIBLE</button>
+                        <button type="button" class="tablinks" ng-click="" onclick="openCity(event, '05')">PEAJE</button>
+                        <button type="button" class="tablinks" ng-click="" onclick="openCity(event, '06')">TRASLADOS</button>
+                        <button type="button" class="tablinks" ng-click="" onclick="openCity(event, '07')">OTROS GASTOS</button>
+                    </div>
+                    <div class="panel tabcontent" style="display: block;" id="01">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-3"><h4>01- HOSPEDAJE</h4></div>
+                                <div class="col-md-3">MONTO OTORGADO: <b>{{vm.Monto.hospedaje}}</b></div>
+                                <div class="col-md-3">MONTO COMPROBADO: <b>{{vm.SumaHospedaje()}}</b></div>
+                                <div class="col-md-3">MONTO A COMPROBAR: <b>{{vm.FormatoDecimal(vm.Monto.hospedaje-vm.SubHospedaje)}}</b></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura XML</label>
+                                    <input type="file" class="form-control" accept="text/xml" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="archivo1" id="archivo1" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura PDF</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="fact1" id="fact1" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura y Verificación SAT PDF firmada</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="firm1" id="firm1" />
+                                </div>
+                                @*<div class="col-md-3" style="text-align:center">
+                                    <label>Comprobación SAT</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" name="comp1" id="comp1" />
+                                    *@<button type="button" class="btn btn-primary" ng-click="vm.infoXML(1)" ng-disabled="!vm.PuedeEditar" ng-required="true">Adjuntar</button>@*
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-bordered" ng-hide="vm.lstHospedaje==null || vm.lstHospedaje.length==0">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>RFC del emisor</th>
+                                    <th>Núm. Factura o folio fiscal</th>
+                                    <th>Fecha expedición</th>
+                                    <th>Nombre o razón social del emisor</th>
+                                    <th>Importe Factura</th>
+                                    <th>Cantidad</th>
+                                    <th ng-hide="vm.Terminado!=true">Documentos</th>
+                                    <th ng-hide="vm.Terminado!=true">Claf. Gasto</th>
+                                    <th></th>
+                                </tr>
+                                <tbody>
+                                    <tr ng-repeat="f in vm.lstHospedaje">
+                                        <td>{{f.contador}}</td>
+                                        <td>{{f.RFC}}</td>
+                                        <td>{{f.noFactura}}</td>
+                                        <td>{{f.fecha.substr(6,13) | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{f.nombre}}</td>
+                                        <td>{{f.importe}}</td>
+                                        <td> <input type="number" class="form-control" ng-model="f.gasto" ng-blur="vm.SumaHospedaje()" ng-init="f.gasto = f.gasto || f.importe" ng-disabled="!vm.PuedeEditar" ng-required="true" /></td>
+                                        <td><button type="button" class="btn btn-info" ng-click="vm.ModalDocumentos(f)">VER</button></td>
+                                        <td><i ng-hide="vm.Terminado!=true">{{f.clasificadorGasto}}</i></td>
+                                        <td>
+                                            <button type="button" ng-hide="vm.Terminado==true">
+                                                <i ng-click="vm.Eliminar(f.id,1)" class="fa fa-2x fa-trash" style="color:red"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel tabcontent" style="display: block;" id="02">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-3"><h4>02- ALIMENTACIÓN</h4></div>
+                                <div class="col-md-3">MONTO OTORGADO: <b>{{vm.Monto.alimentacion}}</b></div>
+                                <div class="col-md-3">MONTO COMPROBADO: <b>{{vm.SumaAlimentos()}}</b></div>
+                                <div class="col-md-3">MONTO A COMPROBAR: <b>{{vm.FormatoDecimal(vm.Monto.alimentacion-vm.SubAlimentos)}}</b></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura XML</label>
+                                    <input type="file" class="form-control" accept="text/xml" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="archivo2" id="archivo2" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura PDF</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="fact2" id="fact2" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura y Verificación SAT PDF firmada</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="firm2" id="firm2" />
+                                </div>
+                                @*<div class="col-md-3" style="text-align:center">
+                                    <label>Comprobación SAT</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" name="comp2" id="comp2" />
+                                    *@<button type="button" class="btn btn-primary" ng-click="vm.infoXML(2)" ng-disabled="!vm.PuedeEditar" ng-required="true">Adjuntar</button>@*
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-bordered" ng-hide="vm.lstAlimentos==null || vm.lstAlimentos.length==0">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>RFC del emisor</th>
+                                    <th>Núm. Factura o folio fiscal</th>
+                                    <th>Fecha expedición</th>
+                                    <th>Nombre o razón social del emisor</th>
+                                    <th>Importe Factura</th>
+                                    <th>Cantidad</th>
+                                    <th ng-hide="vm.Terminado!=true">Documentos</th>
+                                    <th ng-hide="vm.Terminado!=true">Claf. Gasto</th>
+                                    <th></th>
+                                </tr>
+                                <tbody>
+                                    <tr ng-repeat="f in vm.lstAlimentos">
+                                        <td>{{f.contador}}</td>
+                                        <td>{{f.RFC}}</td>
+                                        <td>{{f.noFactura}}</td>
+                                        <td>{{f.fecha.substr(6,13) | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{f.nombre}}</td>
+                                        <td>{{f.importe}}</td>
+                                        <td><input type="number" class="form-control" ng-model="f.gasto" ng-blur="vm.SumaAlimentos()" ng-init="f.gasto = f.gasto || f.importe" ng-disabled="!vm.PuedeEditar" ng-required="true" /></td>
+                                        <td><button type="button" class="btn btn-info" ng-click="vm.ModalDocumentos(f)">VER</button></td>
+                                        <td><i ng-hide="vm.Terminado!=true">{{f.clasificadorGasto}}</i></td>
+                                        <td>
+                                            <button type="button" ng-hide="vm.Terminado==true">
+                                                <i ng-click="vm.Eliminar(f.id,2)" class="fa fa-2x fa-trash" style="color:red"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel tabcontent" style="display: block;" id="03">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-3"><h4>03- AVIÓN /AUTOBUS</h4></div>
+                                <div class="col-md-3">MONTO OTORGADO: <b>{{vm.Monto.terrestre}}</b></div>
+                                <div class="col-md-3">MONTO COMPROBADO: <b>{{vm.SumaTransporte()}}</b></div>
+                                <div class="col-md-3">MONTO A COMPROBAR: <b>{{vm.FormatoDecimal(vm.Monto.terrestre-vm.SubTransporte)}}</b></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura XML</label>
+                                    <input type="file" class="form-control" accept="text/xml" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="archivo3" id="archivo3" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura PDF</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="fact3" id="fact3" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura y Verificación SAT PDF firmada</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="firm3" id="firm3" />
+                                </div>
+                                @*<div class="col-md-3" style="text-align:center">
+                                    <label>Comprobación SAT</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" name="comp3" id="comp3" />
+                                    *@<button type="button" class="btn btn-primary" ng-click="vm.infoXML(3)" ng-disabled="!vm.PuedeEditar" ng-required="true">Adjuntar</button>@*
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-bordered" ng-hide="vm.lstTransporte==null || vm.lstTransporte.length==0">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>RFC del emisor</th>
+                                    <th>Núm. Factura o folio fiscal</th>
+                                    <th>Fecha expedición</th>
+                                    <th>Nombre o razón social del emisor</th>
+                                    <th>Tipo de gasto</th>
+                                    <th>Importe Factura</th>
+                                    <th>Cantidad</th>
+                                    <th ng-hide="vm.Terminado!=true">Documentos</th>
+                                    <th ng-hide="vm.Terminado!=true">Claf. Gasto</th>
+                                    <th></th>
+                                </tr>
+                                <tbody>
+                                    <tr ng-repeat="f in vm.lstTransporte">
+                                        <td>{{f.contador}}</td>
+                                        <td>{{f.RFC}}</td>
+                                        <td>{{f.noFactura}}</td>
+                                        <td>{{f.fecha.substr(6,13) | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{f.nombre}}</td>
+                                        <td>
+                                            <select ng-model="f.idTipo" class="form-control">
+                                                <option value="1">AVIÓN</option>
+                                                <option value="2">CAMIÓN</option>
+                                            </select>
+                                        </td>
+                                        <td>{{f.importe}}</td>
+                                        <td><input type="number" class="form-control" ng-model="f.gasto" ng-disabled="!vm.PuedeEditar" ng-required="true" /></td>
+                                        <td><button type="button" class="btn btn-info" ng-click="vm.ModalDocumentos(f)">VER</button></td>
+                                        <td><i ng-hide="vm.Terminado!=true">{{f.clasificadorGasto}}</i></td>
+                                        <td>
+                                            <button type="button" ng-hide="vm.Terminado==true">
+                                                <i ng-click="vm.Eliminar(f.id,3)" class="fa fa-2x fa-trash" style="color:red"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel tabcontent" style="display:block" id="04">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-3"><h4>04- COMBUSTIBLE</h4></div>
+                                <div class="col-md-3">MONTO OTORGADO: <b>{{vm.Monto.combustible}}</b></div>
+                                <div class="col-md-3">MONTO COMPROBADO: <b>{{vm.SumaCombustible()}}</b></div>
+                                <div class="col-md-3">MONTO A COMPROBAR: <b>{{vm.FormatoDecimal(vm.Monto.combustible-vm.SubCombustible)}}</b></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura XML</label>
+                                    <input type="file" class="form-control" accept="text/xml" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="archivo4" id="archivo4" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura PDF</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="fact4" id="fact4" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura y Verificación SAT PDF firmada</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="firm4" id="firm4" />
+                                </div>
+                                @*<div class="col-md-3" style="text-align:center">
+                                    <label>Comprobación SAT</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" name="comp4" id="comp4" />
+                                    *@<button type="button" class="btn btn-primary" ng-click="vm.infoXML(4)" ng-disabled="!vm.PuedeEditar" ng-required="true">Adjuntar</button>@*
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-bordered" ng-hide="vm.lstCombustible==null || vm.lstCombustible.length==0">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>RFC del emisor</th>
+                                    <th>Núm. Factura o folio fiscal</th>
+                                    <th>Fecha expedición</th>
+                                    <th>Nombre o razón social del emisor</th>
+                                    <th>Tipo de gasto</th>
+                                    <th>Importe Factura</th>
+                                    <th>Cantidad</th>
+                                    <th ng-hide="vm.Terminado!=true">Documentos</th>
+                                    <th ng-hide="vm.Terminado!=true">Claf. Gasto</th>
+                                    <th></th>
+                                </tr>
+                                <tbody>
+                                    <tr ng-repeat="f in vm.lstCombustible">
+                                        <td>{{f.contador}}</td>
+                                        <td>{{f.RFC}}</td>
+                                        <td>{{f.noFactura}}</td>
+                                        <td>{{f.fecha.substr(6,13) | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{f.nombre}}</td>
+                                        <td>
+                                            <select ng-model="f.idTipo">
+                                                <option value="1">COMBUSTIBLE</option>
+                                                <option value="2">LUBRICANTES</option>
+                                            </select>
+                                        </td>
+                                        <td>{{f.importe}}</td>
+                                        <td><input type="number" class="form-control" ng-model="f.gasto" ng-disabled="!vm.PuedeEditar" ng-required="true" /></td>
+                                        <td><button type="button" class="btn btn-info" ng-click="vm.ModalDocumentos(f)">VER</button></td>
+                                        <td><i ng-hide="vm.Terminado!=true">{{f.clasificadorGasto}}</i></td>
+                                        <td>
+                                            <button type="button" ng-hide="vm.Terminado==true">
+                                                <i ng-click="vm.Eliminar(f.id,4)" class="fa fa-2x fa-trash" style="color:red"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel tabcontent" style="display:block" id="05">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-3"><h4>05- PEAJE</h4></div>
+                                <div class="col-md-3">MONTO OTORGADO: <b>{{vm.Monto.peaje}}</b></div>
+                                <div class="col-md-3">MONTO COMPROBADO: <b>{{vm.SumaPeaje()}}</b></div>
+                                <div class="col-md-3">MONTO A COMPROBAR: <b>{{vm.FormatoDecimal(vm.Monto.peaje-vm.SubPeaje)}}</b></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura XML</label>
+                                    <input type="file" class="form-control" accept="text/xml" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="archivo5" id="archivo5" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura PDF</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="fact5" id="fact5" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura y Verificación SAT PDF firmada</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="firm5" id="firm5" />
+                                </div>
+                                @*<div class="col-md-3" style="text-align:center">
+                                    <label>Comprobación SAT</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" name="comp5" id="comp5" />
+                                   *@ <button type="button" class="btn btn-primary" ng-click="vm.infoXML(5)" ng-disabled="!vm.PuedeEditar" ng-required="true">Adjuntar</button>@*
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-bordered" ng-hide="vm.lstPeaje==null || vm.lstPeaje.length==0">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>RFC del emisor</th>
+                                    <th>Núm. Factura o folio fiscal</th>
+                                    <th>Fecha expedición</th>
+                                    <th>Nombre o razón social del emisor</th>
+                                    <th>Importe Factura</th>
+                                    <th>Cantidad</th>
+                                    <th ng-hide="vm.Terminado!=true">Documentos</th>
+                                    <th ng-hide="vm.Terminado!=true">Claf. Gasto</th>
+                                    <th></th>
+                                </tr>
+                                <tbody>
+                                    <tr ng-repeat="f in vm.lstPeaje">
+                                        <td>{{f.contador}}</td>
+                                        <td>{{f.RFC}}</td>
+                                        <td>{{f.noFactura}}</td>
+                                        <td>{{f.fecha.substr(6,13) | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{f.nombre}}</td>
+                                        <td>{{f.importe}}</td>
+                                        <td><input type="number" class="form-control" ng-model="f.gasto" ng-disabled="!vm.PuedeEditar" ng-required="true" /></td>
+                                        <td><button type="button" class="btn btn-info" ng-click="vm.ModalDocumentos(f)">VER</button></td>
+                                        <td><i ng-hide="vm.Terminado!=true">{{f.clasificadorGasto}}</i></td>
+                                        <td>
+                                            <button type="button" ng-hide="vm.Terminado==true">
+                                                <i ng-click="vm.Eliminar(f.id,5)" class="fa fa-2x fa-trash" style="color:red"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel tabcontent" style="display:block" id="06">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-3"><h4>06- TRASLADOS LOCALES</h4></div>
+                                <div class="col-md-3">MONTO OTORGADO: <b>{{vm.Monto.traslados}}</b></div>
+                                <div class="col-md-3">MONTO COMPROBADO: <b>{{vm.SumaTraslado()}}</b></div>
+                                <div class="col-md-3">MONTO A COMPROBAR: <b>{{vm.FormatoDecimal(vm.Monto.traslados-vm.SubTraslado)}}</b></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura XML</label>
+                                    <input type="file" class="form-control" accept="text/xml" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="archivo6" id="archivo6" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura PDF</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="fact6" id="fact6" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura y Verificación SAT PDF firmada</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="firm6" id="firm6" />
+                                </div>
+                                @*<div class="col-md-3" style="text-align:center">
+                                    <label>Comprobación SAT</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" name="comp6" id="comp6" />
+                                    *@<button type="button" class="btn btn-primary" ng-click="vm.infoXML(6)" ng-disabled="!vm.PuedeEditar" ng-required="true">Adjuntar</button>@*
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-bordered" ng-hide="vm.lstTraslado==null || vm.lstTraslado.length==0">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>RFC del emisor</th>
+                                    <th>Núm. Factura o folio fiscal</th>
+                                    <th>Fecha expedición</th>
+                                    <th>Nombre o razón social del emisor</th>
+                                    <th>Importe Factura</th>
+                                    <th>Cantidad</th>
+                                    <th ng-hide="vm.Terminado!=true">Documentos</th>
+                                    <th ng-hide="vm.Terminado!=true">Claf. Gasto</th>
+                                    <th></th>
+                                </tr>
+                                <tbody>
+                                    <tr ng-repeat="f in vm.lstTraslado">
+                                        <td>{{f.contador}}</td>
+                                        <td>{{f.RFC}}</td>
+                                        <td>{{f.noFactura}}</td>
+                                        <td>{{f.fecha.substr(6,13) | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{f.nombre}}</td>
+                                        <td>{{f.importe}}</td>
+                                        <td><input type="number" class="form-control" ng-model="f.gasto" ng-disabled="!vm.PuedeEditar" ng-required="true" /></td>
+                                        <td><button type="button" class="btn btn-info" ng-click="vm.ModalDocumentos(f)">VER</button></td>
+                                        <td><i ng-hide="vm.Terminado!=true">{{f.clasificadorGasto}}</i></td>
+                                        <td>
+                                            <button type="button" ng-hide="vm.Terminado==true">
+                                                <i ng-click="vm.Eliminar(f.id,6)" class="fa fa-2x fa-trash" style="color:red"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel tabcontent" style="display:block" id="07">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-3"><h4>07- OTROS GASTOS</h4></div>
+                                <div class="col-md-3">MONTO OTORGADO: <b>{{vm.Monto.otrosGastos}}</b></div>
+                                <div class="col-md-3">MONTO COMPROBADO: <b>{{vm.SumaOtros()}}</b></div>
+                                <div class="col-md-3">MONTO A COMPROBAR: <b>{{vm.FormatoDecimal(vm.Monto.otrosGastos-vm.SubOtros)}}</b></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura XML</label>
+                                    <input type="file" class="form-control" accept="text/xml" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="archivo7" id="archivo7" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura PDF</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="fact7" id="fact7" />
+                                </div>
+                                <div class="col-md-4" style="text-align:center">
+                                    <label>Factura y Verificación SAT PDF firmada</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" ng-disabled="!vm.PuedeEditar" ng-required="true" name="firm7" id="firm7" />
+                                </div>
+                                @*<div class="col-md-3" style="text-align:center">
+                                    <label>Comprobación SAT</label>
+                                    <input type="file" class="form-control" accept="application/pdf" ng-model="vm.xml" name="comp7" id="comp7" />
+                                    *@<button type="button" class="btn btn-primary" ng-click="vm.infoXML(7)" ng-disabled="!vm.PuedeEditar" ng-required="true">Adjuntar</button>@*
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-hover table-bordered" ng-hide="vm.lstOtros==null || vm.lstOtros.length==0">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>RFC del emisor</th>
+                                    <th>Núm. Factura o folio fiscal</th>
+                                    <th>Fecha expedición</th>
+                                    <th>Nombre o razón social del emisor</th>
+                                    <th>Importe Factura</th>
+                                    <th>Cantidad</th>
+                                    <th ng-hide="vm.Terminado!=true">Documentos</th>
+                                    <th ng-hide="vm.Terminado!=true">Claf. Gasto</th>
+                                    <th></th>
+                                </tr>
+                                <tbody>
+                                    <tr ng-repeat="f in vm.lstOtros">
+                                        <td>{{f.contador}}</td>
+                                        <td>{{f.RFC}}</td>
+                                        <td>{{f.noFactura}}</td>
+                                        <td>{{f.fecha.substr(6,13) | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{f.nombre}}</td>
+                                        <td>{{f.importe}}</td>
+                                        <td><input type="number" class="form-control" ng-model="f.gasto" ng-disabled="!vm.PuedeEditar" ng-required="true" /></td>
+                                        <td><button type="button" class="btn btn-info" ng-click="vm.ModalDocumentos(f)">VER</button></td>
+                                        <td><i ng-hide="vm.Terminado!=true">{{f.clasificadorGasto}}</i></td>
+                                        <td>
+                                            <button type="button" ng-hide="vm.Terminado==true">
+                                                <i ng-click="vm.Eliminar(f.id,7)" class="fa fa-2x fa-trash" style="color:red"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row form-group" ng-hide="vm.encontrado==null||vm.encontrado==false">
+                        <div class="col-md-8">
+                            <lable>
+                                OBSERVACIONES/ACLARACIONES:
+                            </lable>
+                            <textarea type="text" rows="4" ng-model="vm.Comision.observaciones" ng-disabled="!vm.PuedeEditar" ng-required="true" class="form-control"></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            
+                        </div>                        
+                    </div>
+                    <br />
+                    <div class="row" style="text-align:right">
+                        <div class="col-md-10">
+                            <b>IMPORTE TOTAL DE RECURSOS COMPROBADOS Y EJERCIDOS: (  B  )</b>
+                        </div>
+                        <div class="col-md-2">
+                            {{vm.SubHospedaje+vm.SubAlimentos+vm.SubCombustible+vm.SubPeaje+vm.SubTraslado+vm.SubOtros+vm.SubTransporte}}
+                        </div>
+                    </div>
+                    <div class="row" style="text-align:right">
+                        <div class="col-md-10">
+                            <b ng-hide="vm.Total()<0">REINTEGRO AL TRIBUNAL:</b>
+                            <b ng-hide="vm.Total()>=0">REINTEGRO AL COMISIONADO (A):</b>
+                        </div>
+                        <div class="col-md-2">
+                            {{vm.FormatoDecimal((vm.Monto.hospedaje+vm.Monto.alimentacion+vm.Monto.terrestre+vm.Monto.combustible+vm.Monto.peaje+vm.Monto.traslados+vm.Monto.otrosGastos)-(vm.SubHospedaje+vm.SubAlimentos+vm.SubCombustible+vm.SubPeaje+vm.SubTraslado+vm.SubOtros+vm.SubTransporte))}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="text-align:right" ng-hide="vm.Terminado!=true">
+
+                </div>
+                <div class="row" style="text-align:right">
+                    <div class="col-md-12">
+                        <button type="button" ng-click="vm.GuardarComprobacion()" ng-disabled="!vm.PuedeEditar" ng-required="true" class="btn btn-success">Guardar</button>
+                    </div>
+                    <div class="col-md-8" ng-hide="vm.Terminado!=true">
+                        <button type="button" class="btn btn-info" ng-click="vm.generarZip()">Descargar Archivos</button>
+                    </div>
+                    <div class="col-md-2" ng-hide="vm.Terminado!=true">
+                        <lable>
+                            Número de Póliza
+                        </lable>
+                        <input type="text" ng-model="vm.Comision.noPoliza" ng-disabled="!vm.PuedeEditar" ng-required="true" class="form-control" />
+                    </div>
+                    <div class="col-md-2" ng-hide="vm.Terminado!=true">
+                        <button type="button" ng-click="vm.GuardarNoPoliza()" ng-disabled="!vm.PuedeEditar" ng-required="true" class="btn btn-primary">Validar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="mdl-Documentos" modal="showModal" close="cancel()" class="modal fade modal-arriba" data-easein="expandIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" ng-submit="vm.AgregarAnexos()">
+                    <div class="modal-header">
+                        Expediente digital 
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class=" row form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">
+                                No. Oficio: <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                {{vm.Comision.noOficio}}
+                            </div>
+                        </div>
+                        <div class=" row form-group">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">
+                                Servidor: <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                {{vm.Comision.noEmpleado+' '+vm.nombre}}
+                            </div>
+                        </div>                        
+                        <div class=" row form-group">                            
+                            <div class="col-md-12">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td>Archivo XML</td>
+                                            <td>Archivo PDF</td>
+                                            <td>Archivo PDF Firmado</td>
+                                            <td>Archivo PDF Verificación SAT</td>
+                                            <td>Anexos PDF</td>
+                                        </tr>
+                                    </thead>                                    
+                                    <tbody>                                        
+                                        <tr>
+                                            <td><a href="" type="button" class="fa fa-file-text fa-2x" style="color:green" ng-click="vm.MostrarDoc(vm.Documento.Factura.rutaXML)" ng-hide="vm.Documento.Factura.rutaXML==NULL"></a></td>
+                                            <td><a href="" type="button" class="fa fa-file-pdf-o fa-2x" style="color:red" ng-click="vm.MostrarDoc(vm.Documento.Factura.rutaPDF)" ng-hide="vm.Documento.Factura.rutaPDF==NULL"></a></td>
+                                            <td><a href="" type="button" class="fa fa-file-pdf-o fa-2x" style="color:red" ng-click="vm.MostrarDoc(vm.Documento.Factura.rutaPDFFirmado)" ng-hide="vm.Documento.Factura.rutaPDFFirmado==NULL"></a></td>
+                                            <td><a href="" type="button" class="fa fa-file-pdf-o fa-2x" style="color:red" ng-click="vm.MostrarDoc(vm.Documento.Factura.rutaComprobacion)" ng-hide="vm.Documento.Factura.rutaComprobacion==NULL"></a></td>
+                                            <td><a href="" type="button" class="fa fa-file-pdf-o fa-2x" style="color:red" ng-click="vm.MostrarDoc(vm.Comision.rutaOficio)" ng-hide="vm.Comision.rutaOficio==NULL"></a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div div class="modal-footer">
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                <button class="btn btn-primary" type="reset" ng-click="">Cancelar</button>
+                                <button type="submit" class="btn btn-success">Guardar </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var uploadField = document.getElementById("archivo");
+    openCity(event, '01');
+    uploadField.onchange = function () {
+        if (this.files[0].type != "application/pdf") {
+            sweetAlert("Solo puede adjuntar archivos PDF", "", "error");
+            this.value = "";
+            return;
+        }
+        if (this.files[0].size > 10485760) {
+            sweetAlert("El archivo no debe exceder 10 MB", "", "error");
+            this.value = "";
+        };
+    };
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }    
+</script>
+@section scripts{
+    <script src="~/Scripts/app/controladores/ComprobacionController.js"></script>
+    <script src="~/Scripts/app/factory/ComprobacionFactory.js"></script>
+}

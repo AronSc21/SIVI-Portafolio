@@ -1,0 +1,52 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+    <div class="row">
+        <div class="danger">
+            @ViewBag.Error
+        </div>
+        <form action="@Url.Content("~/Home/Login")" method="post">
+            <center>
+                <br /><br />
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <input type="text" class="form-control" name="usuario" placeholder="Nombre de usuario" />
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" class="form-control" placeholder="Contraseña" name="pass" />
+                    </div>
+                    <br />
+                    <div>
+                        <button class="btn btn-primary" type="reset">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Entrar </button>
+                    </div>
+                    @if (!String.IsNullOrEmpty(ViewBag.Error))
+                    {
+                        <br />
+                        <div class="alert alert-danger" style="color:#a94442;background-color:#f2dede;text-shadow:none;">
+                            <i class="glyphicon glyphicon-alert"></i>
+                            @ViewBag.Error
+                        </div>
+                    }
+                </div>
+                <div class="col-md-4"></div>                
+            </center>
+        </form>
+    </div>
+</body>
+</html>

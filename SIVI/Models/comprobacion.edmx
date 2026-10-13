@@ -1,0 +1,850 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="contabilidadModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AnexoCombustible">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idComision" Type="int" Nullable="false" />
+          <Property Name="kmDestino" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="kmRutas" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="precioCombustible" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="montoCombustible" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="montoPeaje" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="numCilindros" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ComisionGeneral">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="noEmpleado" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="noOficio" Type="varchar" MaxLength="50" />
+          <Property Name="tipoGasto" Type="int" />
+          <Property Name="objetivoComision" Type="varchar(max)" />
+          <Property Name="lugarComision" Type="varchar" MaxLength="255" />
+          <Property Name="avion" Type="bit" />
+          <Property Name="autobus" Type="bit" />
+          <Property Name="automovil" Type="bit" />
+          <Property Name="noPlacas" Type="varchar" MaxLength="50" />
+          <Property Name="fechaInicio" Type="datetime" />
+          <Property Name="fechaFinal" Type="datetime" />
+          <Property Name="horaSalida" Type="datetime" />
+          <Property Name="diasComision" Type="int" />
+          <Property Name="ctaBancaria" Type="varchar" MaxLength="50" />
+          <Property Name="fechaPago" Type="datetime" />
+          <Property Name="noOperacion" Type="varchar" MaxLength="50" />
+          <Property Name="principalesAcciones" Type="varchar(max)" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="fechaAlta" Type="datetime" Nullable="false" />
+          <Property Name="actividadesrealizadas" Type="varchar(max)" />
+          <Property Name="resultadosObtenidos" Type="varchar(max)" />
+          <Property Name="contribuciones" Type="varchar(max)" />
+          <Property Name="noPoliza" Type="varchar" MaxLength="50" />
+          <Property Name="rutaOficio" Type="varchar(max)" />
+          <Property Name="fechaOficio" Type="datetime" />
+          <Property Name="fechaComprobacion" Type="datetime" />
+          <Property Name="reintegro" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="reintegrado" Type="bit" />
+          <Property Name="jefeComision" Type="varchar" MaxLength="4" />
+          <Property Name="observaciones" Type="varchar(max)" />
+          <Property Name="validadoRF" Type="bit" />
+          <Property Name="reposicion" Type="bit" />
+          <Property Name="permitirCorrecion" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FacturaEncabezado">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="folio" Type="varchar(max)" Nullable="false" />
+          <Property Name="serie" Type="varchar(max)" Nullable="false" />
+          <Property Name="rfcEmisor" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="fechaExpedicion" Type="datetime" Nullable="false" />
+          <Property Name="razonSocial" Type="varchar(max)" Nullable="false" />
+          <Property Name="importe" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="rutaXML" Type="varchar(max)" Nullable="false" />
+          <Property Name="rutaPDF" Type="varchar(max)" />
+          <Property Name="rutaPDFFirmado" Type="varchar(max)" />
+          <Property Name="rutaComrpobacion" Type="varchar(max)" />
+          <Property Name="fechaAlta" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GastosComprobar">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idComision" Type="int" Nullable="false" />
+          <Property Name="idTipoGasto" Type="int" Nullable="false" />
+          <Property Name="idFactura" Type="int" Nullable="false" />
+          <Property Name="importe" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="idTipo" Type="int" />
+          <Property Name="clasificadorGasto" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MontoMaximo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idComision" Type="int" Nullable="false" />
+          <Property Name="hospedaje" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="alimentacion" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="terrestre" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="combustible" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="peaje" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="traslados" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="otrosGastos" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="idUsuarioAlta" Type="int" Nullable="false" />
+          <Property Name="fechaAlta" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tabulador">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nivel" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Puesto" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Hospedaje" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Alimentos" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoGasto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tmp_formaPago">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RFCEmisor" Type="varchar" MaxLength="50" />
+          <Property Name="razonSocialEmisor" Type="varchar" MaxLength="255" />
+          <Property Name="fechaExpedicion" Type="datetime" />
+          <Property Name="importe" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="serie" Type="varchar" MaxLength="50" />
+          <Property Name="UUID" Type="varchar" MaxLength="255" />
+          <Property Name="metodoPago" Type="varchar" MaxLength="50" />
+          <Property Name="enc_UUID" Type="varchar" MaxLength="255" />
+          <Property Name="enc_fechaExpedicion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="vehiculos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="marca" Type="varchar" MaxLength="50" />
+          <Property Name="modelo" Type="varchar" MaxLength="50" />
+          <Property Name="tipo" Type="varchar" MaxLength="50" />
+          <Property Name="placa" Type="varchar" MaxLength="50" />
+          <Property Name="color" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_AnexoCombustible_ComisionGeneral">
+          <End Role="ComisionGeneral" Type="Self.ComisionGeneral" Multiplicity="1" />
+          <End Role="AnexoCombustible" Type="Self.AnexoCombustible" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComisionGeneral">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AnexoCombustible">
+              <PropertyRef Name="idComision" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GastosComprobar_ComisionGeneral">
+          <End Role="ComisionGeneral" Type="Self.ComisionGeneral" Multiplicity="1" />
+          <End Role="GastosComprobar" Type="Self.GastosComprobar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComisionGeneral">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="GastosComprobar">
+              <PropertyRef Name="idComision" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GastosComprobar_FacturaEncabezado">
+          <End Role="FacturaEncabezado" Type="Self.FacturaEncabezado" Multiplicity="1" />
+          <End Role="GastosComprobar" Type="Self.GastosComprobar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FacturaEncabezado">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="GastosComprobar">
+              <PropertyRef Name="idFactura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GastosComprobar_TipoGasto">
+          <End Role="TipoGasto" Type="Self.TipoGasto" Multiplicity="1" />
+          <End Role="GastosComprobar" Type="Self.GastosComprobar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoGasto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="GastosComprobar">
+              <PropertyRef Name="idTipoGasto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MontoMaximo_ComisionGeneral">
+          <End Role="ComisionGeneral" Type="Self.ComisionGeneral" Multiplicity="1" />
+          <End Role="MontoMaximo" Type="Self.MontoMaximo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComisionGeneral">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MontoMaximo">
+              <PropertyRef Name="idComision" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="csp_BusquedaComision" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="csp_Datos_ASF" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idComision" Type="int" Mode="In" />
+        </Function>
+        <Function Name="csp_rpt_solicitud" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idComision" Type="int" Mode="In" />
+        </Function>
+        <Function Name="csp_Tabulador" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="noEmpleado" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="contabilidadModelStoreContainer">
+          <EntitySet Name="AnexoCombustible" EntityType="Self.AnexoCombustible" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComisionGeneral" EntityType="Self.ComisionGeneral" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FacturaEncabezado" EntityType="Self.FacturaEncabezado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GastosComprobar" EntityType="Self.GastosComprobar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MontoMaximo" EntityType="Self.MontoMaximo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tabulador" EntityType="Self.Tabulador" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoGasto" EntityType="Self.TipoGasto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tmp_formaPago" EntityType="Self.tmp_formaPago" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vehiculos" EntityType="Self.vehiculos" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AnexoCombustible_ComisionGeneral" Association="Self.FK_AnexoCombustible_ComisionGeneral">
+            <End Role="ComisionGeneral" EntitySet="ComisionGeneral" />
+            <End Role="AnexoCombustible" EntitySet="AnexoCombustible" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GastosComprobar_ComisionGeneral" Association="Self.FK_GastosComprobar_ComisionGeneral">
+            <End Role="ComisionGeneral" EntitySet="ComisionGeneral" />
+            <End Role="GastosComprobar" EntitySet="GastosComprobar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GastosComprobar_FacturaEncabezado" Association="Self.FK_GastosComprobar_FacturaEncabezado">
+            <End Role="FacturaEncabezado" EntitySet="FacturaEncabezado" />
+            <End Role="GastosComprobar" EntitySet="GastosComprobar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GastosComprobar_TipoGasto" Association="Self.FK_GastosComprobar_TipoGasto">
+            <End Role="TipoGasto" EntitySet="TipoGasto" />
+            <End Role="GastosComprobar" EntitySet="GastosComprobar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MontoMaximo_ComisionGeneral" Association="Self.FK_MontoMaximo_ComisionGeneral">
+            <End Role="ComisionGeneral" EntitySet="ComisionGeneral" />
+            <End Role="MontoMaximo" EntitySet="MontoMaximo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="contabilidadModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="MontoMaximo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idComision" Type="Int32" Nullable="false" />
+          <Property Name="hospedaje" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="alimentacion" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="terrestre" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="combustible" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="peaje" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="traslados" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="otrosGastos" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="idUsuarioAlta" Type="Int32" Nullable="false" />
+          <Property Name="fechaAlta" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ComisionGeneral" Relationship="contabilidadModel.FK_MontoMaximo_ComisionGeneral" FromRole="MontoMaximo" ToRole="ComisionGeneral" />
+        </EntityType>
+        <EntityType Name="TipoGasto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="GastosComprobar" Relationship="contabilidadModel.FK_GastosComprobar_TipoGasto" FromRole="TipoGasto" ToRole="GastosComprobar" />
+        </EntityType>
+        <EntityContainer Name="contabilidadEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MontoMaximo" EntityType="Self.MontoMaximo" />
+          <EntitySet Name="TipoGasto" EntityType="Self.TipoGasto" />
+          <EntitySet Name="Tabulador" EntityType="contabilidadModel.Tabulador" />
+          <FunctionImport Name="csp_Tabulador" ReturnType="Collection(contabilidadModel.csp_Tabulador_Result)">
+          <Parameter Name="noEmpleado" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="FacturaEncabezado" EntityType="contabilidadModel.FacturaEncabezado" />
+          <EntitySet Name="GastosComprobar" EntityType="contabilidadModel.GastosComprobar" />
+          <AssociationSet Name="FK_GastosComprobar_FacturaEncabezado" Association="contabilidadModel.FK_GastosComprobar_FacturaEncabezado">
+            <End Role="FacturaEncabezado" EntitySet="FacturaEncabezado" />
+            <End Role="GastosComprobar" EntitySet="GastosComprobar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GastosComprobar_TipoGasto" Association="contabilidadModel.FK_GastosComprobar_TipoGasto">
+            <End Role="TipoGasto" EntitySet="TipoGasto" />
+            <End Role="GastosComprobar" EntitySet="GastosComprobar" />
+          </AssociationSet>
+          <FunctionImport Name="csp_Datos_ASF" ReturnType="Collection(contabilidadModel.csp_Datos_ASF_Result)">
+          <Parameter Name="idComision" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="tmp_formaPago" EntityType="contabilidadModel.tmp_formaPago" />
+          <EntitySet Name="vehiculos" EntityType="contabilidadModel.vehiculos" />
+          <FunctionImport Name="csp_rpt_solicitud" ReturnType="Collection(contabilidadModel.csp_rpt_solicitud_Result)">
+          <Parameter Name="idComision" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="csp_BusquedaComision" ReturnType="Collection(contabilidadModel.csp_BusquedaComision_Result)" />
+          <EntitySet Name="AnexoCombustible" EntityType="contabilidadModel.AnexoCombustible" />
+          <EntitySet Name="ComisionGeneral" EntityType="contabilidadModel.ComisionGeneral" />
+          <AssociationSet Name="FK_AnexoCombustible_ComisionGeneral" Association="contabilidadModel.FK_AnexoCombustible_ComisionGeneral">
+            <End Role="ComisionGeneral" EntitySet="ComisionGeneral" />
+            <End Role="AnexoCombustible" EntitySet="AnexoCombustible" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GastosComprobar_ComisionGeneral" Association="contabilidadModel.FK_GastosComprobar_ComisionGeneral">
+            <End Role="ComisionGeneral" EntitySet="ComisionGeneral" />
+            <End Role="GastosComprobar" EntitySet="GastosComprobar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MontoMaximo_ComisionGeneral" Association="contabilidadModel.FK_MontoMaximo_ComisionGeneral">
+            <End Role="ComisionGeneral" EntitySet="ComisionGeneral" />
+            <End Role="MontoMaximo" EntitySet="MontoMaximo" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Tabulador">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nivel" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Puesto" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Hospedaje" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Alimentos" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+        </EntityType>
+        <ComplexType Name="csp_Tabulador_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="Nivel" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="Puesto" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Hospedaje" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Alimentos" Nullable="false" Precision="18" Scale="2" />
+        </ComplexType>
+        <EntityType Name="FacturaEncabezado">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="folio" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="serie" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="rfcEmisor" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="fechaExpedicion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="razonSocial" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="importe" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="rutaXML" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="rutaPDF" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="rutaPDFFirmado" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="rutaComrpobacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fechaAlta" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="GastosComprobar" Relationship="contabilidadModel.FK_GastosComprobar_FacturaEncabezado" FromRole="FacturaEncabezado" ToRole="GastosComprobar" />
+        </EntityType>
+        <EntityType Name="GastosComprobar">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idComision" Type="Int32" Nullable="false" />
+          <Property Name="idTipoGasto" Type="Int32" Nullable="false" />
+          <Property Name="idFactura" Type="Int32" Nullable="false" />
+          <Property Name="importe" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="idTipo" Type="Int32" />
+          <Property Name="clasificadorGasto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="FacturaEncabezado" Relationship="contabilidadModel.FK_GastosComprobar_FacturaEncabezado" FromRole="GastosComprobar" ToRole="FacturaEncabezado" />
+          <NavigationProperty Name="TipoGasto" Relationship="contabilidadModel.FK_GastosComprobar_TipoGasto" FromRole="GastosComprobar" ToRole="TipoGasto" />
+          <NavigationProperty Name="ComisionGeneral" Relationship="contabilidadModel.FK_GastosComprobar_ComisionGeneral" FromRole="GastosComprobar" ToRole="ComisionGeneral" />
+        </EntityType>
+        <Association Name="FK_GastosComprobar_FacturaEncabezado">
+          <End Type="contabilidadModel.FacturaEncabezado" Role="FacturaEncabezado" Multiplicity="1" />
+          <End Type="contabilidadModel.GastosComprobar" Role="GastosComprobar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FacturaEncabezado">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="GastosComprobar">
+              <PropertyRef Name="idFactura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GastosComprobar_TipoGasto">
+          <End Type="contabilidadModel.TipoGasto" Role="TipoGasto" Multiplicity="1" />
+          <End Type="contabilidadModel.GastosComprobar" Role="GastosComprobar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoGasto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="GastosComprobar">
+              <PropertyRef Name="idTipoGasto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="csp_Datos_ASF_Result">
+          <Property Type="Int64" Name="Numero" Nullable="true" />
+          <Property Type="String" Name="rfcEmisor" Nullable="false" MaxLength="14" />
+          <Property Type="String" Name="razonSocial" Nullable="false" />
+          <Property Type="String" Name="descripcion" Nullable="false" MaxLength="8" />
+          <Property Type="DateTime" Name="fechaAdqui" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="montoPagado" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="entregable" Nullable="false" MaxLength="19" />
+          <Property Type="Decimal" Name="montoParticipaciones" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="serie" Nullable="false" />
+          <Property Type="String" Name="noPoliza" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="clasificadorGasto" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="tmp_formaPago">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RFCEmisor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="razonSocialEmisor" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="fechaExpedicion" Type="DateTime" Precision="3" />
+          <Property Name="importe" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="serie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UUID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="metodoPago" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="enc_UUID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="enc_fechaExpedicion" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="vehiculos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="marca" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="modelo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="placa" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="csp_rpt_solicitud_Result">
+          <Property Type="Int32" Name="idComision" Nullable="false" />
+          <Property Type="String" Name="noEmpleado" Nullable="false" MaxLength="4" />
+          <Property Type="String" Name="noOficio" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="objetivoComision" Nullable="true" />
+          <Property Type="String" Name="lugarComision" Nullable="true" MaxLength="255" />
+          <Property Type="DateTime" Name="fechaInicio" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="fechaFinal" Nullable="true" Precision="23" />
+          <Property Type="String" Name="principalesAcciones" Nullable="true" />
+          <Property Type="Boolean" Name="avion" Nullable="true" />
+          <Property Type="Boolean" Name="autobus" Nullable="true" />
+          <Property Type="Boolean" Name="automovil" Nullable="true" />
+          <Property Type="String" Name="noPlacas" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="horaSalida" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="diasComision" Nullable="true" />
+          <Property Type="Decimal" Name="hospedaje" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="alimentacion" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="terrestre" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="combustible" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="peaje" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="traslados" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="otrosGastos" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="actividadesrealizadas" Nullable="true" />
+          <Property Type="String" Name="resultadosObtenidos" Nullable="true" />
+          <Property Type="String" Name="contribuciones" Nullable="true" />
+          <Property Type="DateTime" Name="fechaOficio" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="fechaComprobacion" Nullable="true" Precision="23" />
+          <Property Type="String" Name="jefeComision" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="observaciones" Nullable="true" />
+          <Property Type="Boolean" Name="reposicion" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="csp_BusquedaComision_Result">
+          <Property Type="Int32" Name="idComision" Nullable="false" />
+          <Property Type="String" Name="noOficio" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="noEmpleado" Nullable="false" MaxLength="4" />
+          <Property Type="String" Name="objetivoComision" Nullable="true" />
+          <Property Type="String" Name="lugarComision" Nullable="true" MaxLength="255" />
+          <Property Type="DateTime" Name="fechaInicio" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="fechaFinal" Nullable="true" Precision="23" />
+          <Property Type="String" Name="principalesAcciones" Nullable="true" />
+          <Property Type="String" Name="actividadesrealizadas" Nullable="true" />
+          <Property Type="String" Name="resultadosObtenidos" Nullable="true" />
+          <Property Type="String" Name="contribuciones" Nullable="true" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Apellidos" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="idArea" Nullable="false" />
+          <Property Type="String" Name="Area" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="noPoliza" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="rutaOficio" Nullable="true" />
+          <Property Type="Decimal" Name="montoOtorgado" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="montoComprobado" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="DateTime" Name="fechacomprobacion" Nullable="true" Precision="23" />
+          <Property Type="Decimal" Name="reintegro" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="observaciones" Nullable="true" />
+          <Property Type="Boolean" Name="permitirCorrecion" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="AnexoCombustible">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idComision" Type="Int32" Nullable="false" />
+          <Property Name="kmDestino" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="kmRutas" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="precioCombustible" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="montoCombustible" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="montoPeaje" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="numCilindros" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ComisionGeneral" Relationship="contabilidadModel.FK_AnexoCombustible_ComisionGeneral" FromRole="AnexoCombustible" ToRole="ComisionGeneral" />
+        </EntityType>
+        <EntityType Name="ComisionGeneral">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="noEmpleado" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="noOficio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tipoGasto" Type="Int32" />
+          <Property Name="objetivoComision" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="lugarComision" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="avion" Type="Boolean" />
+          <Property Name="autobus" Type="Boolean" />
+          <Property Name="automovil" Type="Boolean" />
+          <Property Name="noPlacas" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fechaInicio" Type="DateTime" Precision="3" />
+          <Property Name="fechaFinal" Type="DateTime" Precision="3" />
+          <Property Name="horaSalida" Type="DateTime" Precision="3" />
+          <Property Name="diasComision" Type="Int32" />
+          <Property Name="ctaBancaria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fechaPago" Type="DateTime" Precision="3" />
+          <Property Name="noOperacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="principalesAcciones" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="fechaAlta" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="actividadesrealizadas" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="resultadosObtenidos" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="contribuciones" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="noPoliza" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="rutaOficio" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fechaOficio" Type="DateTime" Precision="3" />
+          <Property Name="fechaComprobacion" Type="DateTime" Precision="3" />
+          <Property Name="reintegro" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="reintegrado" Type="Boolean" />
+          <Property Name="jefeComision" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="observaciones" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="validadoRF" Type="Boolean" />
+          <Property Name="reposicion" Type="Boolean" />
+          <Property Name="permitirCorrecion" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AnexoCombustible" Relationship="contabilidadModel.FK_AnexoCombustible_ComisionGeneral" FromRole="ComisionGeneral" ToRole="AnexoCombustible" />
+          <NavigationProperty Name="GastosComprobar" Relationship="contabilidadModel.FK_GastosComprobar_ComisionGeneral" FromRole="ComisionGeneral" ToRole="GastosComprobar" />
+          <NavigationProperty Name="MontoMaximo" Relationship="contabilidadModel.FK_MontoMaximo_ComisionGeneral" FromRole="ComisionGeneral" ToRole="MontoMaximo" />
+        </EntityType>
+        <Association Name="FK_AnexoCombustible_ComisionGeneral">
+          <End Type="contabilidadModel.ComisionGeneral" Role="ComisionGeneral" Multiplicity="1" />
+          <End Type="contabilidadModel.AnexoCombustible" Role="AnexoCombustible" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComisionGeneral">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AnexoCombustible">
+              <PropertyRef Name="idComision" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GastosComprobar_ComisionGeneral">
+          <End Type="contabilidadModel.ComisionGeneral" Role="ComisionGeneral" Multiplicity="1" />
+          <End Type="contabilidadModel.GastosComprobar" Role="GastosComprobar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComisionGeneral">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="GastosComprobar">
+              <PropertyRef Name="idComision" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MontoMaximo_ComisionGeneral">
+          <End Type="contabilidadModel.ComisionGeneral" Role="ComisionGeneral" Multiplicity="1" />
+          <End Type="contabilidadModel.MontoMaximo" Role="MontoMaximo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComisionGeneral">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MontoMaximo">
+              <PropertyRef Name="idComision" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="contabilidadModelStoreContainer" CdmEntityContainer="contabilidadEntities">
+          <EntitySetMapping Name="MontoMaximo">
+            <EntityTypeMapping TypeName="contabilidadModel.MontoMaximo">
+              <MappingFragment StoreEntitySet="MontoMaximo">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idComision" ColumnName="idComision" />
+                <ScalarProperty Name="hospedaje" ColumnName="hospedaje" />
+                <ScalarProperty Name="alimentacion" ColumnName="alimentacion" />
+                <ScalarProperty Name="terrestre" ColumnName="terrestre" />
+                <ScalarProperty Name="combustible" ColumnName="combustible" />
+                <ScalarProperty Name="peaje" ColumnName="peaje" />
+                <ScalarProperty Name="traslados" ColumnName="traslados" />
+                <ScalarProperty Name="otrosGastos" ColumnName="otrosGastos" />
+                <ScalarProperty Name="idUsuarioAlta" ColumnName="idUsuarioAlta" />
+                <ScalarProperty Name="fechaAlta" ColumnName="fechaAlta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoGasto">
+            <EntityTypeMapping TypeName="contabilidadModel.TipoGasto">
+              <MappingFragment StoreEntitySet="TipoGasto">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tabulador">
+            <EntityTypeMapping TypeName="contabilidadModel.Tabulador">
+              <MappingFragment StoreEntitySet="Tabulador">
+                <ScalarProperty Name="Alimentos" ColumnName="Alimentos" />
+                <ScalarProperty Name="Hospedaje" ColumnName="Hospedaje" />
+                <ScalarProperty Name="Puesto" ColumnName="Puesto" />
+                <ScalarProperty Name="Nivel" ColumnName="Nivel" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="csp_Tabulador" FunctionName="contabilidadModel.Store.csp_Tabulador">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="contabilidadModel.csp_Tabulador_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Nivel" ColumnName="Nivel" />
+                <ScalarProperty Name="Puesto" ColumnName="Puesto" />
+                <ScalarProperty Name="Hospedaje" ColumnName="Hospedaje" />
+                <ScalarProperty Name="Alimentos" ColumnName="Alimentos" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="FacturaEncabezado">
+            <EntityTypeMapping TypeName="contabilidadModel.FacturaEncabezado">
+              <MappingFragment StoreEntitySet="FacturaEncabezado">
+                <ScalarProperty Name="fechaAlta" ColumnName="fechaAlta" />
+                <ScalarProperty Name="rutaComrpobacion" ColumnName="rutaComrpobacion" />
+                <ScalarProperty Name="rutaPDFFirmado" ColumnName="rutaPDFFirmado" />
+                <ScalarProperty Name="rutaPDF" ColumnName="rutaPDF" />
+                <ScalarProperty Name="rutaXML" ColumnName="rutaXML" />
+                <ScalarProperty Name="importe" ColumnName="importe" />
+                <ScalarProperty Name="razonSocial" ColumnName="razonSocial" />
+                <ScalarProperty Name="fechaExpedicion" ColumnName="fechaExpedicion" />
+                <ScalarProperty Name="rfcEmisor" ColumnName="rfcEmisor" />
+                <ScalarProperty Name="serie" ColumnName="serie" />
+                <ScalarProperty Name="folio" ColumnName="folio" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GastosComprobar">
+            <EntityTypeMapping TypeName="contabilidadModel.GastosComprobar">
+              <MappingFragment StoreEntitySet="GastosComprobar">
+                <ScalarProperty Name="clasificadorGasto" ColumnName="clasificadorGasto" />
+                <ScalarProperty Name="idTipo" ColumnName="idTipo" />
+                <ScalarProperty Name="importe" ColumnName="importe" />
+                <ScalarProperty Name="idFactura" ColumnName="idFactura" />
+                <ScalarProperty Name="idTipoGasto" ColumnName="idTipoGasto" />
+                <ScalarProperty Name="idComision" ColumnName="idComision" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="csp_Datos_ASF" FunctionName="contabilidadModel.Store.csp_Datos_ASF">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="contabilidadModel.csp_Datos_ASF_Result">
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="rfcEmisor" ColumnName="rfcEmisor" />
+                <ScalarProperty Name="razonSocial" ColumnName="razonSocial" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="fechaAdqui" ColumnName="fechaAdqui" />
+                <ScalarProperty Name="montoPagado" ColumnName="montoPagado" />
+                <ScalarProperty Name="entregable" ColumnName="entregable" />
+                <ScalarProperty Name="montoParticipaciones" ColumnName="montoParticipaciones" />
+                <ScalarProperty Name="serie" ColumnName="serie" />
+                <ScalarProperty Name="noPoliza" ColumnName="noPoliza" />
+                <ScalarProperty Name="clasificadorGasto" ColumnName="clasificadorGasto" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="tmp_formaPago">
+            <EntityTypeMapping TypeName="contabilidadModel.tmp_formaPago">
+              <MappingFragment StoreEntitySet="tmp_formaPago">
+                <ScalarProperty Name="enc_fechaExpedicion" ColumnName="enc_fechaExpedicion" />
+                <ScalarProperty Name="enc_UUID" ColumnName="enc_UUID" />
+                <ScalarProperty Name="metodoPago" ColumnName="metodoPago" />
+                <ScalarProperty Name="UUID" ColumnName="UUID" />
+                <ScalarProperty Name="serie" ColumnName="serie" />
+                <ScalarProperty Name="importe" ColumnName="importe" />
+                <ScalarProperty Name="fechaExpedicion" ColumnName="fechaExpedicion" />
+                <ScalarProperty Name="razonSocialEmisor" ColumnName="razonSocialEmisor" />
+                <ScalarProperty Name="RFCEmisor" ColumnName="RFCEmisor" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vehiculos">
+            <EntityTypeMapping TypeName="contabilidadModel.vehiculos">
+              <MappingFragment StoreEntitySet="vehiculos">
+                <ScalarProperty Name="color" ColumnName="color" />
+                <ScalarProperty Name="placa" ColumnName="placa" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="modelo" ColumnName="modelo" />
+                <ScalarProperty Name="marca" ColumnName="marca" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="csp_rpt_solicitud" FunctionName="contabilidadModel.Store.csp_rpt_solicitud">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="contabilidadModel.csp_rpt_solicitud_Result">
+                <ScalarProperty Name="idComision" ColumnName="idComision" />
+                <ScalarProperty Name="noEmpleado" ColumnName="noEmpleado" />
+                <ScalarProperty Name="noOficio" ColumnName="noOficio" />
+                <ScalarProperty Name="objetivoComision" ColumnName="objetivoComision" />
+                <ScalarProperty Name="lugarComision" ColumnName="lugarComision" />
+                <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+                <ScalarProperty Name="fechaFinal" ColumnName="fechaFinal" />
+                <ScalarProperty Name="principalesAcciones" ColumnName="principalesAcciones" />
+                <ScalarProperty Name="avion" ColumnName="avion" />
+                <ScalarProperty Name="autobus" ColumnName="autobus" />
+                <ScalarProperty Name="automovil" ColumnName="automovil" />
+                <ScalarProperty Name="noPlacas" ColumnName="noPlacas" />
+                <ScalarProperty Name="horaSalida" ColumnName="horaSalida" />
+                <ScalarProperty Name="diasComision" ColumnName="diasComision" />
+                <ScalarProperty Name="hospedaje" ColumnName="hospedaje" />
+                <ScalarProperty Name="alimentacion" ColumnName="alimentacion" />
+                <ScalarProperty Name="terrestre" ColumnName="terrestre" />
+                <ScalarProperty Name="combustible" ColumnName="combustible" />
+                <ScalarProperty Name="peaje" ColumnName="peaje" />
+                <ScalarProperty Name="traslados" ColumnName="traslados" />
+                <ScalarProperty Name="otrosGastos" ColumnName="otrosGastos" />
+                <ScalarProperty Name="actividadesrealizadas" ColumnName="actividadesrealizadas" />
+                <ScalarProperty Name="resultadosObtenidos" ColumnName="resultadosObtenidos" />
+                <ScalarProperty Name="contribuciones" ColumnName="contribuciones" />
+                <ScalarProperty Name="fechaOficio" ColumnName="fechaOficio" />
+                <ScalarProperty Name="fechaComprobacion" ColumnName="fechaComprobacion" />
+                <ScalarProperty Name="jefeComision" ColumnName="jefeComision" />
+                <ScalarProperty Name="observaciones" ColumnName="observaciones" />
+                <ScalarProperty Name="reposicion" ColumnName="reposicion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="csp_BusquedaComision" FunctionName="contabilidadModel.Store.csp_BusquedaComision">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="contabilidadModel.csp_BusquedaComision_Result">
+                <ScalarProperty Name="idComision" ColumnName="idComision" />
+                <ScalarProperty Name="noOficio" ColumnName="noOficio" />
+                <ScalarProperty Name="noEmpleado" ColumnName="noEmpleado" />
+                <ScalarProperty Name="objetivoComision" ColumnName="objetivoComision" />
+                <ScalarProperty Name="lugarComision" ColumnName="lugarComision" />
+                <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+                <ScalarProperty Name="fechaFinal" ColumnName="fechaFinal" />
+                <ScalarProperty Name="principalesAcciones" ColumnName="principalesAcciones" />
+                <ScalarProperty Name="actividadesrealizadas" ColumnName="actividadesrealizadas" />
+                <ScalarProperty Name="resultadosObtenidos" ColumnName="resultadosObtenidos" />
+                <ScalarProperty Name="contribuciones" ColumnName="contribuciones" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="idArea" ColumnName="idArea" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="noPoliza" ColumnName="noPoliza" />
+                <ScalarProperty Name="rutaOficio" ColumnName="rutaOficio" />
+                <ScalarProperty Name="montoOtorgado" ColumnName="montoOtorgado" />
+                <ScalarProperty Name="montoComprobado" ColumnName="montoComprobado" />
+                <ScalarProperty Name="fechacomprobacion" ColumnName="fechacomprobacion" />
+                <ScalarProperty Name="reintegro" ColumnName="reintegro" />
+                <ScalarProperty Name="observaciones" ColumnName="observaciones" />
+                <ScalarProperty Name="permitirCorrecion" ColumnName="permitirCorrecion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="AnexoCombustible">
+            <EntityTypeMapping TypeName="contabilidadModel.AnexoCombustible">
+              <MappingFragment StoreEntitySet="AnexoCombustible">
+                <ScalarProperty Name="numCilindros" ColumnName="numCilindros" />
+                <ScalarProperty Name="montoPeaje" ColumnName="montoPeaje" />
+                <ScalarProperty Name="montoCombustible" ColumnName="montoCombustible" />
+                <ScalarProperty Name="precioCombustible" ColumnName="precioCombustible" />
+                <ScalarProperty Name="kmRutas" ColumnName="kmRutas" />
+                <ScalarProperty Name="kmDestino" ColumnName="kmDestino" />
+                <ScalarProperty Name="idComision" ColumnName="idComision" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComisionGeneral">
+            <EntityTypeMapping TypeName="contabilidadModel.ComisionGeneral">
+              <MappingFragment StoreEntitySet="ComisionGeneral">
+                <ScalarProperty Name="permitirCorrecion" ColumnName="permitirCorrecion" />
+                <ScalarProperty Name="reposicion" ColumnName="reposicion" />
+                <ScalarProperty Name="validadoRF" ColumnName="validadoRF" />
+                <ScalarProperty Name="observaciones" ColumnName="observaciones" />
+                <ScalarProperty Name="jefeComision" ColumnName="jefeComision" />
+                <ScalarProperty Name="reintegrado" ColumnName="reintegrado" />
+                <ScalarProperty Name="reintegro" ColumnName="reintegro" />
+                <ScalarProperty Name="fechaComprobacion" ColumnName="fechaComprobacion" />
+                <ScalarProperty Name="fechaOficio" ColumnName="fechaOficio" />
+                <ScalarProperty Name="rutaOficio" ColumnName="rutaOficio" />
+                <ScalarProperty Name="noPoliza" ColumnName="noPoliza" />
+                <ScalarProperty Name="contribuciones" ColumnName="contribuciones" />
+                <ScalarProperty Name="resultadosObtenidos" ColumnName="resultadosObtenidos" />
+                <ScalarProperty Name="actividadesrealizadas" ColumnName="actividadesrealizadas" />
+                <ScalarProperty Name="fechaAlta" ColumnName="fechaAlta" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="principalesAcciones" ColumnName="principalesAcciones" />
+                <ScalarProperty Name="noOperacion" ColumnName="noOperacion" />
+                <ScalarProperty Name="fechaPago" ColumnName="fechaPago" />
+                <ScalarProperty Name="ctaBancaria" ColumnName="ctaBancaria" />
+                <ScalarProperty Name="diasComision" ColumnName="diasComision" />
+                <ScalarProperty Name="horaSalida" ColumnName="horaSalida" />
+                <ScalarProperty Name="fechaFinal" ColumnName="fechaFinal" />
+                <ScalarProperty Name="fechaInicio" ColumnName="fechaInicio" />
+                <ScalarProperty Name="noPlacas" ColumnName="noPlacas" />
+                <ScalarProperty Name="automovil" ColumnName="automovil" />
+                <ScalarProperty Name="autobus" ColumnName="autobus" />
+                <ScalarProperty Name="avion" ColumnName="avion" />
+                <ScalarProperty Name="lugarComision" ColumnName="lugarComision" />
+                <ScalarProperty Name="objetivoComision" ColumnName="objetivoComision" />
+                <ScalarProperty Name="tipoGasto" ColumnName="tipoGasto" />
+                <ScalarProperty Name="noOficio" ColumnName="noOficio" />
+                <ScalarProperty Name="noEmpleado" ColumnName="noEmpleado" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

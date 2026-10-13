@@ -1,0 +1,203 @@
+﻿@{
+    ViewBag.Title = "AnexoCombustible";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    var idUsuario = '@ViewBag.id';
+    var idArea = @ViewBag.idArea;
+    var idComision = @ViewBag.idComision;
+    var usuarioCaptura = @ViewBag.usuarioCaptura;
+</script>
+
+<div ng-controller="ComprobacionController as vm">
+    <div class="container" ng-init="vm.Iniciar()">
+        <h2>ANEXO COMBUSTIBLE</h2>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Búsqueda por número de oficio</h3>
+            </div>
+
+            <div class="panel-body">
+
+
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label class="control-label">NÚMERO DE OFICIO:</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" ng-model="vm.noOficio" ng-required="true" class="form-control" />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-info"
+                                ng-click="vm.BuscarAnexoCombustible()"
+                                ng-disabled="vm.noOficio == null">
+                            Buscar
+                        </button>
+
+                    </div>
+                </div>
+                <br />
+                <div class="row form-group" ng-hide="vm.encontrado==null||vm.encontrado==false">
+                    <div class="col-md-5">
+                        <label>NOMBRE DEL COMISIONADO (A):</label>
+                        <input type="text" ng-model="vm.nombre" ng-disabled="true" class="form-control" />
+                    </div>
+
+                    <div class="col-md-5">
+                        <label>ÁREA DE ADSCRIPCIÓN:</label>
+                        <input type="text" ng-model="vm.area" ng-disabled="true" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>OFICIO No.</label>
+                        <input type="text" ng-model="vm.Comision.noOficio" ng-required="true" ng-disabled="true" class="form-control" />
+
+                        <label>FECHA OFICIO:</label>
+                        <input type="date" ng-model="vm.Comision.fechaOficio" ng-required="true" ng-disabled="true" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>OBJETIVO DE LA COMISIÓN:</label>
+                        <textarea type="text" rows="4" ng-model="vm.Comision.objetivoComision" ng-disabled="true" ng-required="true" class="form-control"></textarea>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>LUGAR DE LA COMISIÓN:</label>
+                        <input type="text" ng-model="vm.Comision.lugarComision" ng-required="true" ng-disabled="true" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>FECHA DE INICIO DE COMISIÓN:</label>
+                        <input type="date" ng-model="vm.Comision.fechaInicio" ng-required="true" ng-disabled="true" class="form-control" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>FECHA DE TÉRMINO DE COMISIÓN:</label>
+                        <input type="date" ng-model="vm.Comision.fechaFinal" ng-required="true" ng-disabled="true" class="form-control" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>MARCA DEL VEHÍCULO:</label>
+                        <input type="text" class="form-control" ng-model="vm.vehiculo.marca" ng-disabled="true" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>MODELO DEL VEHÍCULO:</label>
+                        <input type="text" class="form-control" ng-model="vm.vehiculo.modelo" ng-disabled="true" />
+                    </div>
+                </div>
+
+
+
+
+                <div class="row form-group" ng-hide="vm.encontrado==null||vm.encontrado==false">
+
+                    <div class="col-md-4">
+                        <label>
+                            KILOMETROS AL DESTINO (IDA Y VUELTA):
+                        </label>
+                        <input type="number"
+                               class="form-control"
+                               ng-model="vm.Anexo.kmDestino"
+                               ng-show="vm.mostrarCamposAnexo"
+                               ng-change="vm.MarcarAnexoNoGuardado()" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>
+                            PRECIO DEL COMBUSTIBLE:
+                        </label>
+                        <input type="number"
+                               class="form-control"
+                               ng-model="vm.Anexo.precioCombustible"
+                               ng-show="vm.mostrarCamposAnexo"
+                               ng-change="vm.MarcarAnexoNoGuardado()" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>
+                            MONTO DE COMBUSTIBLE AUTORIZADO:
+                        </label>
+                        <input type="number"
+                               class="form-control"
+                               ng-model="vm.Anexo.montoCombustible"
+                               ng-show="vm.mostrarCamposAnexo"
+                               ng-change="vm.MarcarAnexoNoGuardado()" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>
+                            NÚMERO DE CILINDROS:
+                        </label>
+                        <select class="form-control"
+                                ng-model="vm.Anexo.numCilindros"
+                                ng-show="vm.mostrarCamposAnexo"
+                                ng-change="vm.MarcarAnexoNoGuardado()">
+                            <option value="">Seleccione</option>
+                            <option value="4">4</option>
+                            <option value="6">6</option>
+                            <option value="8">8</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>
+                            KILOMETROS RUTAS AL INTERIOR:
+                        </label>
+                        <input type="number"
+                               class="form-control"
+                               ng-model="vm.Anexo.kmRutas"
+                               ng-show="vm.mostrarCamposAnexo"
+                               ng-change="vm.MarcarAnexoNoGuardado()" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>
+                            MONTO DE PEAJES AUTORIZADOS:
+                        </label>
+                        <input type="number"
+                               class="form-control"
+                               ng-model="vm.Anexo.montoPeaje"
+                               ng-show="vm.mostrarCamposAnexo"
+                               ng-change="vm.MarcarAnexoNoGuardado()" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label>
+                            MONTO MÁXIMO:
+                        </label>
+                        <input type="number"
+                               class="form-control"
+                               ng-value="vm.CalcularMontoMaximo()"
+                               readonly />
+                    </div>
+                </div>
+
+                <div class="row" style="text-align:right">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-success" ng-click="vm.GenerarReporteCombustible(vm.Comision.id)" ng-show="vm.mostrarCamposAnexo" ng-disabled="!vm.anexoGuardado">
+                            <i class="fa fa-file-excel-o"></i> Generar reporte
+                        </button>
+                        <button type="button" ng-click="vm.GuardarAnexoCombustible()" ng-show="vm.mostrarCamposAnexo" class="btn btn-success">
+                            Guardar
+                        </button>
+
+                    </div>
+                    </div>
+                </div>
+
+            </div>
+    </div>
+</div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/app/controladores/ComprobacionController.js"></script>
+    <script src="~/Scripts/app/factory/ComprobacionFactory.js"></script>
+}

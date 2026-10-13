@@ -1,0 +1,814 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SISEPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Areas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="PadreID" Type="tinyint" />
+          <Property Name="Vigente" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DetalleSolicitud">
+          <Key>
+            <PropertyRef Name="IdDetalle" />
+          </Key>
+          <Property Name="IdDetalle" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSolicitud" Type="int" Nullable="false" />
+          <Property Name="IdPermiso" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="FechaInicio" Type="smalldatetime" Nullable="false" />
+          <Property Name="HoraInicio" Type="smalldatetime" Nullable="false" />
+          <Property Name="FechaTermino" Type="smalldatetime" Nullable="false" />
+          <Property Name="HoraTermino" Type="smalldatetime" Nullable="false" />
+          <Property Name="FolioNumOficio" Type="varchar" MaxLength="50" />
+          <Property Name="Fecha" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="EnlaceAreas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="NoEmpleado" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="IdArea" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Estatus">
+          <Key>
+            <PropertyRef Name="IdEstatus" />
+          </Key>
+          <Property Name="IdEstatus" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="JefeAreas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="NoEmpleado" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="IdArea" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Permisos">
+          <Key>
+            <PropertyRef Name="IdPermiso" />
+          </Key>
+          <Property Name="IdPermiso" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="Permiso" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="vigente" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pers_perm">
+          <Key>
+            <PropertyRef Name="NoEmpleado" />
+          </Key>
+          <Property Name="NoEmpleado" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="35" />
+          <Property Name="Apellidos" Type="varchar" MaxLength="50" />
+          <Property Name="ClavePuesto" Type="varchar" MaxLength="10" />
+          <Property Name="AreaId" Type="tinyint" />
+          <Property Name="Tipo_Contrato" Type="varchar" MaxLength="100" />
+          <Property Name="Fecha_Ingreso" Type="smalldatetime" />
+          <Property Name="Telefono" Type="varchar" MaxLength="50" />
+          <Property Name="Extension" Type="varchar" MaxLength="50" />
+          <Property Name="Vigente" Type="bit" />
+        </EntityType>
+        <EntityType Name="Solicitud">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NoEmpleado" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="AreaId" Type="tinyint" Nullable="false" />
+          <Property Name="FechaSolicitud" Type="smalldatetime" Nullable="false" />
+          <Property Name="EstatusId" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="Observaciones" Type="varchar" MaxLength="2500" />
+          <Property Name="FechaJefe" Type="smalldatetime" />
+          <Property Name="FechaRH" Type="smalldatetime" />
+          <Property Name="FechaCaptura" Type="smalldatetime" Nullable="false" />
+          <Property Name="ObservacionesJefe" Type="varchar" MaxLength="2500" />
+          <Property Name="ObservacionesRH" Type="varchar" MaxLength="2500" />
+          <Property Name="UsuarioCaptura" Type="varchar" MaxLength="50" />
+          <Property Name="UsuarioJefe" Type="varchar" MaxLength="50" />
+          <Property Name="UsuarioRH" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="Noempleado" />
+          </Key>
+          <Property Name="Noempleado" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Areas_Areas">
+          <End Role="Areas" Type="Self.Areas" Multiplicity="0..1" />
+          <End Role="Areas1" Type="Self.Areas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Areas1">
+              <PropertyRef Name="PadreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetalleSolicitud_Permisos">
+          <End Role="Permisos" Type="Self.Permisos" Multiplicity="1" />
+          <End Role="DetalleSolicitud" Type="Self.DetalleSolicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permisos">
+              <PropertyRef Name="IdPermiso" />
+            </Principal>
+            <Dependent Role="DetalleSolicitud">
+              <PropertyRef Name="IdPermiso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetalleSolicitud_Solicitud">
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="1" />
+          <End Role="DetalleSolicitud" Type="Self.DetalleSolicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Solicitud">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DetalleSolicitud">
+              <PropertyRef Name="IdSolicitud" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EnlaceAreas_Areas">
+          <End Role="Areas" Type="Self.Areas" Multiplicity="1" />
+          <End Role="EnlaceAreas" Type="Self.EnlaceAreas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EnlaceAreas">
+              <PropertyRef Name="IdArea" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EnlaceAreas_Pers_perm">
+          <End Role="Pers_perm" Type="Self.Pers_perm" Multiplicity="1" />
+          <End Role="EnlaceAreas" Type="Self.EnlaceAreas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pers_perm">
+              <PropertyRef Name="NoEmpleado" />
+            </Principal>
+            <Dependent Role="EnlaceAreas">
+              <PropertyRef Name="NoEmpleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JefeAreas_Areas">
+          <End Role="Areas" Type="Self.Areas" Multiplicity="1" />
+          <End Role="JefeAreas" Type="Self.JefeAreas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="JefeAreas">
+              <PropertyRef Name="IdArea" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JefeAreas_Pers_perm">
+          <End Role="Pers_perm" Type="Self.Pers_perm" Multiplicity="1" />
+          <End Role="JefeAreas" Type="Self.JefeAreas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pers_perm">
+              <PropertyRef Name="NoEmpleado" />
+            </Principal>
+            <Dependent Role="JefeAreas">
+              <PropertyRef Name="NoEmpleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pers_perm_Areas">
+          <End Role="Areas" Type="Self.Areas" Multiplicity="0..1" />
+          <End Role="Pers_perm" Type="Self.Pers_perm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pers_perm">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Solicitud_Areas">
+          <End Role="Areas" Type="Self.Areas" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Solicitud_Estatus">
+          <End Role="Estatus" Type="Self.Estatus" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estatus">
+              <PropertyRef Name="IdEstatus" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Solicitud_Personal">
+          <End Role="Pers_perm" Type="Self.Pers_perm" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pers_perm">
+              <PropertyRef Name="NoEmpleado" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="NoEmpleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuarios_Pers_perm">
+          <End Role="Pers_perm" Type="Self.Pers_perm" Multiplicity="1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Pers_perm">
+              <PropertyRef Name="NoEmpleado" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="Noempleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="csp_ObtenerJefeArea" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idArea" Type="int" Mode="In" />
+        </Function>
+        <Function Name="csp_rpt_DatosEmpleado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="noEmpleado" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="SISEPModelStoreContainer">
+          <EntitySet Name="Areas" EntityType="Self.Areas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DetalleSolicitud" EntityType="Self.DetalleSolicitud" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EnlaceAreas" EntityType="Self.EnlaceAreas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Estatus" EntityType="Self.Estatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JefeAreas" EntityType="Self.JefeAreas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permisos" EntityType="Self.Permisos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pers_perm" EntityType="Self.Pers_perm" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Solicitud" EntityType="Self.Solicitud" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Areas_Areas" Association="Self.FK_Areas_Areas">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="Areas1" EntitySet="Areas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetalleSolicitud_Permisos" Association="Self.FK_DetalleSolicitud_Permisos">
+            <End Role="Permisos" EntitySet="Permisos" />
+            <End Role="DetalleSolicitud" EntitySet="DetalleSolicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetalleSolicitud_Solicitud" Association="Self.FK_DetalleSolicitud_Solicitud">
+            <End Role="Solicitud" EntitySet="Solicitud" />
+            <End Role="DetalleSolicitud" EntitySet="DetalleSolicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EnlaceAreas_Areas" Association="Self.FK_EnlaceAreas_Areas">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="EnlaceAreas" EntitySet="EnlaceAreas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EnlaceAreas_Pers_perm" Association="Self.FK_EnlaceAreas_Pers_perm">
+            <End Role="Pers_perm" EntitySet="Pers_perm" />
+            <End Role="EnlaceAreas" EntitySet="EnlaceAreas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JefeAreas_Areas" Association="Self.FK_JefeAreas_Areas">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="JefeAreas" EntitySet="JefeAreas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JefeAreas_Pers_perm" Association="Self.FK_JefeAreas_Pers_perm">
+            <End Role="Pers_perm" EntitySet="Pers_perm" />
+            <End Role="JefeAreas" EntitySet="JefeAreas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pers_perm_Areas" Association="Self.FK_Pers_perm_Areas">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="Pers_perm" EntitySet="Pers_perm" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Solicitud_Areas" Association="Self.FK_Solicitud_Areas">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Solicitud_Estatus" Association="Self.FK_Solicitud_Estatus">
+            <End Role="Estatus" EntitySet="Estatus" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Solicitud_Personal" Association="Self.FK_Solicitud_Personal">
+            <End Role="Pers_perm" EntitySet="Pers_perm" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuarios_Pers_perm" Association="Self.FK_Usuarios_Pers_perm">
+            <End Role="Pers_perm" EntitySet="Pers_perm" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SISEPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Areas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PadreID" Type="Byte" />
+          <Property Name="Vigente" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Areas1" Relationship="Self.FK_Areas_Areas" FromRole="Areas" ToRole="Areas1" />
+          <NavigationProperty Name="Areas2" Relationship="Self.FK_Areas_Areas" FromRole="Areas1" ToRole="Areas" />
+          <NavigationProperty Name="EnlaceAreas" Relationship="Self.FK_EnlaceAreas_Areas" FromRole="Areas" ToRole="EnlaceAreas" />
+          <NavigationProperty Name="JefeAreas" Relationship="Self.FK_JefeAreas_Areas" FromRole="Areas" ToRole="JefeAreas" />
+          <NavigationProperty Name="Pers_perm" Relationship="Self.FK_Pers_perm_Areas" FromRole="Areas" ToRole="Pers_perm" />
+          <NavigationProperty Name="Solicitud" Relationship="Self.FK_Solicitud_Areas" FromRole="Areas" ToRole="Solicitud" />
+        </EntityType>
+        <EntityType Name="DetalleSolicitud">
+          <Key>
+            <PropertyRef Name="IdDetalle" />
+          </Key>
+          <Property Name="IdDetalle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdSolicitud" Type="Int32" Nullable="false" />
+          <Property Name="IdPermiso" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="FechaInicio" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HoraInicio" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FechaTermino" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HoraTermino" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FolioNumOficio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Permisos" Relationship="Self.FK_DetalleSolicitud_Permisos" FromRole="DetalleSolicitud" ToRole="Permisos" />
+          <NavigationProperty Name="Solicitud" Relationship="Self.FK_DetalleSolicitud_Solicitud" FromRole="DetalleSolicitud" ToRole="Solicitud" />
+        </EntityType>
+        <EntityType Name="EnlaceAreas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="NoEmpleado" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdArea" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Areas" Relationship="Self.FK_EnlaceAreas_Areas" FromRole="EnlaceAreas" ToRole="Areas" />
+          <NavigationProperty Name="Pers_perm" Relationship="Self.FK_EnlaceAreas_Pers_perm" FromRole="EnlaceAreas" ToRole="Pers_perm" />
+        </EntityType>
+        <EntityType Name="Estatus">
+          <Key>
+            <PropertyRef Name="IdEstatus" />
+          </Key>
+          <Property Name="IdEstatus" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Solicitud" Relationship="Self.FK_Solicitud_Estatus" FromRole="Estatus" ToRole="Solicitud" />
+        </EntityType>
+        <EntityType Name="JefeAreas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="NoEmpleado" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdArea" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Areas" Relationship="Self.FK_JefeAreas_Areas" FromRole="JefeAreas" ToRole="Areas" />
+          <NavigationProperty Name="Pers_perm" Relationship="Self.FK_JefeAreas_Pers_perm" FromRole="JefeAreas" ToRole="Pers_perm" />
+        </EntityType>
+        <EntityType Name="Permisos">
+          <Key>
+            <PropertyRef Name="IdPermiso" />
+          </Key>
+          <Property Name="IdPermiso" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Permiso" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="vigente" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="DetalleSolicitud" Relationship="Self.FK_DetalleSolicitud_Permisos" FromRole="Permisos" ToRole="DetalleSolicitud" />
+        </EntityType>
+        <EntityType Name="Pers_perm">
+          <Key>
+            <PropertyRef Name="NoEmpleado" />
+          </Key>
+          <Property Name="NoEmpleado" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ClavePuesto" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="AreaId" Type="Byte" />
+          <Property Name="Tipo_Contrato" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha_Ingreso" Type="DateTime" Precision="0" />
+          <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Extension" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Vigente" Type="Boolean" />
+          <NavigationProperty Name="Areas" Relationship="Self.FK_Pers_perm_Areas" FromRole="Pers_perm" ToRole="Areas" />
+          <NavigationProperty Name="EnlaceAreas" Relationship="Self.FK_EnlaceAreas_Pers_perm" FromRole="Pers_perm" ToRole="EnlaceAreas" />
+          <NavigationProperty Name="JefeAreas" Relationship="Self.FK_JefeAreas_Pers_perm" FromRole="Pers_perm" ToRole="JefeAreas" />
+          <NavigationProperty Name="Solicitud" Relationship="Self.FK_Solicitud_Personal" FromRole="Pers_perm" ToRole="Solicitud" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuarios_Pers_perm" FromRole="Pers_perm" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Solicitud">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NoEmpleado" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AreaId" Type="Byte" Nullable="false" />
+          <Property Name="FechaSolicitud" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EstatusId" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Observaciones" Type="String" MaxLength="2500" FixedLength="false" Unicode="false" />
+          <Property Name="FechaJefe" Type="DateTime" Precision="0" />
+          <Property Name="FechaRH" Type="DateTime" Precision="0" />
+          <Property Name="FechaCaptura" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ObservacionesJefe" Type="String" MaxLength="2500" FixedLength="false" Unicode="false" />
+          <Property Name="ObservacionesRH" Type="String" MaxLength="2500" FixedLength="false" Unicode="false" />
+          <Property Name="UsuarioCaptura" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UsuarioJefe" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UsuarioRH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Areas" Relationship="Self.FK_Solicitud_Areas" FromRole="Solicitud" ToRole="Areas" />
+          <NavigationProperty Name="DetalleSolicitud" Relationship="Self.FK_DetalleSolicitud_Solicitud" FromRole="Solicitud" ToRole="DetalleSolicitud" />
+          <NavigationProperty Name="Estatus" Relationship="Self.FK_Solicitud_Estatus" FromRole="Solicitud" ToRole="Estatus" />
+          <NavigationProperty Name="Pers_perm" Relationship="Self.FK_Solicitud_Personal" FromRole="Solicitud" ToRole="Pers_perm" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="Noempleado" />
+          </Key>
+          <Property Name="Noempleado" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Pers_perm" Relationship="Self.FK_Usuarios_Pers_perm" FromRole="Usuarios" ToRole="Pers_perm" />
+        </EntityType>
+        <Association Name="FK_Areas_Areas">
+          <End Role="Areas" Type="Self.Areas" Multiplicity="0..1" />
+          <End Role="Areas1" Type="Self.Areas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Areas1">
+              <PropertyRef Name="PadreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EnlaceAreas_Areas">
+          <End Role="Areas" Type="Self.Areas" Multiplicity="1" />
+          <End Role="EnlaceAreas" Type="Self.EnlaceAreas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EnlaceAreas">
+              <PropertyRef Name="IdArea" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JefeAreas_Areas">
+          <End Role="Areas" Type="Self.Areas" Multiplicity="1" />
+          <End Role="JefeAreas" Type="Self.JefeAreas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="JefeAreas">
+              <PropertyRef Name="IdArea" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pers_perm_Areas">
+          <End Role="Areas" Type="Self.Areas" Multiplicity="0..1" />
+          <End Role="Pers_perm" Type="Self.Pers_perm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pers_perm">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Solicitud_Areas">
+          <End Role="Areas" Type="Self.Areas" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Areas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetalleSolicitud_Permisos">
+          <End Role="Permisos" Type="Self.Permisos" Multiplicity="1" />
+          <End Role="DetalleSolicitud" Type="Self.DetalleSolicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permisos">
+              <PropertyRef Name="IdPermiso" />
+            </Principal>
+            <Dependent Role="DetalleSolicitud">
+              <PropertyRef Name="IdPermiso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetalleSolicitud_Solicitud">
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="1" />
+          <End Role="DetalleSolicitud" Type="Self.DetalleSolicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Solicitud">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DetalleSolicitud">
+              <PropertyRef Name="IdSolicitud" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EnlaceAreas_Pers_perm">
+          <End Role="Pers_perm" Type="Self.Pers_perm" Multiplicity="1" />
+          <End Role="EnlaceAreas" Type="Self.EnlaceAreas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pers_perm">
+              <PropertyRef Name="NoEmpleado" />
+            </Principal>
+            <Dependent Role="EnlaceAreas">
+              <PropertyRef Name="NoEmpleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Solicitud_Estatus">
+          <End Role="Estatus" Type="Self.Estatus" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estatus">
+              <PropertyRef Name="IdEstatus" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="EstatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JefeAreas_Pers_perm">
+          <End Role="Pers_perm" Type="Self.Pers_perm" Multiplicity="1" />
+          <End Role="JefeAreas" Type="Self.JefeAreas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pers_perm">
+              <PropertyRef Name="NoEmpleado" />
+            </Principal>
+            <Dependent Role="JefeAreas">
+              <PropertyRef Name="NoEmpleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Solicitud_Personal">
+          <End Role="Pers_perm" Type="Self.Pers_perm" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pers_perm">
+              <PropertyRef Name="NoEmpleado" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="NoEmpleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuarios_Pers_perm">
+          <End Role="Pers_perm" Type="Self.Pers_perm" Multiplicity="1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Pers_perm">
+              <PropertyRef Name="NoEmpleado" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="Noempleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SISEPEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Areas" EntityType="Self.Areas" />
+          <EntitySet Name="DetalleSolicitud" EntityType="Self.DetalleSolicitud" />
+          <EntitySet Name="EnlaceAreas" EntityType="Self.EnlaceAreas" />
+          <EntitySet Name="Estatus" EntityType="Self.Estatus" />
+          <EntitySet Name="JefeAreas" EntityType="Self.JefeAreas" />
+          <EntitySet Name="Permisos" EntityType="Self.Permisos" />
+          <EntitySet Name="Pers_perm" EntityType="Self.Pers_perm" />
+          <EntitySet Name="Solicitud" EntityType="Self.Solicitud" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" />
+          <AssociationSet Name="FK_Areas_Areas" Association="Self.FK_Areas_Areas">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="Areas1" EntitySet="Areas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EnlaceAreas_Areas" Association="Self.FK_EnlaceAreas_Areas">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="EnlaceAreas" EntitySet="EnlaceAreas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JefeAreas_Areas" Association="Self.FK_JefeAreas_Areas">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="JefeAreas" EntitySet="JefeAreas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pers_perm_Areas" Association="Self.FK_Pers_perm_Areas">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="Pers_perm" EntitySet="Pers_perm" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Solicitud_Areas" Association="Self.FK_Solicitud_Areas">
+            <End Role="Areas" EntitySet="Areas" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetalleSolicitud_Permisos" Association="Self.FK_DetalleSolicitud_Permisos">
+            <End Role="Permisos" EntitySet="Permisos" />
+            <End Role="DetalleSolicitud" EntitySet="DetalleSolicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetalleSolicitud_Solicitud" Association="Self.FK_DetalleSolicitud_Solicitud">
+            <End Role="Solicitud" EntitySet="Solicitud" />
+            <End Role="DetalleSolicitud" EntitySet="DetalleSolicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EnlaceAreas_Pers_perm" Association="Self.FK_EnlaceAreas_Pers_perm">
+            <End Role="Pers_perm" EntitySet="Pers_perm" />
+            <End Role="EnlaceAreas" EntitySet="EnlaceAreas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Solicitud_Estatus" Association="Self.FK_Solicitud_Estatus">
+            <End Role="Estatus" EntitySet="Estatus" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JefeAreas_Pers_perm" Association="Self.FK_JefeAreas_Pers_perm">
+            <End Role="Pers_perm" EntitySet="Pers_perm" />
+            <End Role="JefeAreas" EntitySet="JefeAreas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Solicitud_Personal" Association="Self.FK_Solicitud_Personal">
+            <End Role="Pers_perm" EntitySet="Pers_perm" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuarios_Pers_perm" Association="Self.FK_Usuarios_Pers_perm">
+            <End Role="Pers_perm" EntitySet="Pers_perm" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+          <FunctionImport Name="csp_rpt_DatosEmpleado" ReturnType="Collection(SISEPModel.csp_rpt_DatosEmpleado_Result)">
+          <Parameter Name="noEmpleado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="csp_ObtenerJefeArea" ReturnType="Collection(SISEPModel.csp_ObtenerJefeArea_Result)">
+            <Parameter Name="idArea" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="csp_rpt_DatosEmpleado_Result">
+          <Property Type="String" Name="NoEmpleado" Nullable="false" MaxLength="4" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="35" />
+          <Property Type="String" Name="Apellidos" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ClavePuesto" Nullable="true" MaxLength="10" />
+          <Property Type="Byte" Name="AreaId" Nullable="true" />
+          <Property Type="String" Name="Tipo_Contrato" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Area" Nullable="false" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="csp_ObtenerJefeArea_Result">
+          <Property Type="String" Name="NoEmpleado" Nullable="false" MaxLength="4" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="86" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SISEPModelStoreContainer" CdmEntityContainer="SISEPEntities">
+          <EntitySetMapping Name="Areas">
+            <EntityTypeMapping TypeName="SISEPModel.Areas">
+              <MappingFragment StoreEntitySet="Areas">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="PadreID" ColumnName="PadreID" />
+                <ScalarProperty Name="Vigente" ColumnName="Vigente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DetalleSolicitud">
+            <EntityTypeMapping TypeName="SISEPModel.DetalleSolicitud">
+              <MappingFragment StoreEntitySet="DetalleSolicitud">
+                <ScalarProperty Name="IdDetalle" ColumnName="IdDetalle" />
+                <ScalarProperty Name="IdSolicitud" ColumnName="IdSolicitud" />
+                <ScalarProperty Name="IdPermiso" ColumnName="IdPermiso" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="HoraInicio" ColumnName="HoraInicio" />
+                <ScalarProperty Name="FechaTermino" ColumnName="FechaTermino" />
+                <ScalarProperty Name="HoraTermino" ColumnName="HoraTermino" />
+                <ScalarProperty Name="FolioNumOficio" ColumnName="FolioNumOficio" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EnlaceAreas">
+            <EntityTypeMapping TypeName="SISEPModel.EnlaceAreas">
+              <MappingFragment StoreEntitySet="EnlaceAreas">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NoEmpleado" ColumnName="NoEmpleado" />
+                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Estatus">
+            <EntityTypeMapping TypeName="SISEPModel.Estatus">
+              <MappingFragment StoreEntitySet="Estatus">
+                <ScalarProperty Name="IdEstatus" ColumnName="IdEstatus" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JefeAreas">
+            <EntityTypeMapping TypeName="SISEPModel.JefeAreas">
+              <MappingFragment StoreEntitySet="JefeAreas">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NoEmpleado" ColumnName="NoEmpleado" />
+                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permisos">
+            <EntityTypeMapping TypeName="SISEPModel.Permisos">
+              <MappingFragment StoreEntitySet="Permisos">
+                <ScalarProperty Name="IdPermiso" ColumnName="IdPermiso" />
+                <ScalarProperty Name="Permiso" ColumnName="Permiso" />
+                <ScalarProperty Name="vigente" ColumnName="vigente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pers_perm">
+            <EntityTypeMapping TypeName="SISEPModel.Pers_perm">
+              <MappingFragment StoreEntitySet="Pers_perm">
+                <ScalarProperty Name="NoEmpleado" ColumnName="NoEmpleado" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="ClavePuesto" ColumnName="ClavePuesto" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="Tipo_Contrato" ColumnName="Tipo_Contrato" />
+                <ScalarProperty Name="Fecha_Ingreso" ColumnName="Fecha_Ingreso" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="Vigente" ColumnName="Vigente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Solicitud">
+            <EntityTypeMapping TypeName="SISEPModel.Solicitud">
+              <MappingFragment StoreEntitySet="Solicitud">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NoEmpleado" ColumnName="NoEmpleado" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="FechaSolicitud" ColumnName="FechaSolicitud" />
+                <ScalarProperty Name="EstatusId" ColumnName="EstatusId" />
+                <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
+                <ScalarProperty Name="FechaJefe" ColumnName="FechaJefe" />
+                <ScalarProperty Name="FechaRH" ColumnName="FechaRH" />
+                <ScalarProperty Name="FechaCaptura" ColumnName="FechaCaptura" />
+                <ScalarProperty Name="ObservacionesJefe" ColumnName="ObservacionesJefe" />
+                <ScalarProperty Name="ObservacionesRH" ColumnName="ObservacionesRH" />
+                <ScalarProperty Name="UsuarioCaptura" ColumnName="UsuarioCaptura" />
+                <ScalarProperty Name="UsuarioJefe" ColumnName="UsuarioJefe" />
+                <ScalarProperty Name="UsuarioRH" ColumnName="UsuarioRH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="SISEPModel.Usuarios">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="Noempleado" ColumnName="Noempleado" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="csp_rpt_DatosEmpleado" FunctionName="SISEPModel.Store.csp_rpt_DatosEmpleado">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SISEPModel.csp_rpt_DatosEmpleado_Result">
+                <ScalarProperty Name="NoEmpleado" ColumnName="NoEmpleado" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="ClavePuesto" ColumnName="ClavePuesto" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="Tipo_Contrato" ColumnName="Tipo_Contrato" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="csp_ObtenerJefeArea" FunctionName="SISEPModel.Store.csp_ObtenerJefeArea">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SISEPModel.csp_ObtenerJefeArea_Result">
+                <ScalarProperty Name="NoEmpleado" ColumnName="NoEmpleado" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

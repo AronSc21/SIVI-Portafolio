@@ -1,0 +1,247 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Solicitud";
+}
+<script>
+    var idUsuario =@ViewBag.id;
+    var idArea = @ViewBag.idArea;
+    var idComision =@ViewBag.idComision;
+    var usuarioCaptura = @ViewBag.usuarioCaptura;
+</script>
+
+<div ng-controller="ComprobacionController as vm">
+    @*<nav class="nav">
+            <a class="nav-link active" aria-current="page" href="#">Active</a>
+            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </nav>*@
+    <div class="container" ng-init="vm.Iniciar();vm.ObtenerVehiculos();">
+        <form ng-submit="vm.GuardarComprobarGasto()">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2>ANEXO 1</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="row form-group">
+                        <div class="col-md-4">
+                            <label class="control-label">NÚMERO DE EMPLEADO DEL COMISIONADO(A):</label>
+                        </div>
+                        <div class="col-md-1">
+                            <input type="text" ng-model="vm.Comision.noEmpleado" ng-required="true" class="form-control" maxlength="3" />
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-info" ng-click="vm.BuscarEmpleado()" ng-disabled="vm.Comision.noEmpleado==null">Buscar</button>
+                        </div>
+                    </div><br />
+                    <div class="row form-group">
+                        <div class="col-md-5">
+                            <lable>
+                                NOMBRE DEL COMISIONADO (A):
+                            </lable>
+                            <input type="text" ng-model="vm.nombre" ng-disabled="true" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                AREA DE ADSCRIPCIÓN:
+                            </label>
+                            <input type="text" ng-model="vm.area" ng-disabled="true" class="form-control" />
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                CARGO:
+                            </label>
+                            <input type="text" ng-model="vm.cargo" ng-disabled="true" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-hide="vm.encontrado==null||vm.encontrado==false">
+                        <div class="col-md-3">
+                            <lable>
+                                OFICIO No.
+                            </lable>
+                            <input type="text" ng-model="vm.Comision.noOficio" ng-required="true" class="form-control" />
+                            <lable>
+                                FECHA OFICIO:
+                            </lable>
+                            <input type="date" ng-model="vm.Comision.fechaOficio" ng-required="true" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>
+                                OBJETIVO DE LA COMISIÓN:
+                            </label>
+                            <textarea type="text" rows="4" ng-model="vm.Comision.objetivoComision" ng-required="true" class="form-control"></textarea>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                QUIÉN COMSIONA?
+                            </label>
+                            <select ng-model="vm.Comision.jefeComision" ng-required="true" class="form-control">
+                                <option ng-repeat="c in vm.Jefes" value="{{c.NoEmpleado}}">{{c.Nombre}}</option>
+                            </select>
+                            <label>
+                                LUGAR DE LA COMISIÓN:
+                            </label>
+                            <input type="text" ng-model="vm.Comision.lugarComision" ng-required="true" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-hide="vm.encontrado==null||vm.encontrado==false">
+                        <div class="col-md-3">
+                            <lable>
+                                FECHA DE INICIO DE COMISIÓN:
+                            </lable>
+                            <input type="date" ng-model="vm.Comision.fechaInicio" ng-required="true" class="form-control" />
+                            <lable>
+                                HORA DE SALIDA:
+                            </lable>
+                            <input type="time" ng-model="vm.Comision.horaSalida" ng-required="true" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>
+                                PRINCIPALES ACCIONES A REALIZAR:
+                            </label>
+                            <textarea type="text" rows="4" ng-model="vm.Comision.principalesAcciones" ng-required="true" class="form-control"></textarea>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                FECHA DE TÉRMINO DE COMISIÓN
+                            </label>
+                            <input type="date" ng-model="vm.Comision.fechaFinal" ng-required="true" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="panel panel-primary" ng-hide="vm.encontrado==null||vm.encontrado==false">
+                <div class="panel-heading">
+                    <h2>ANEXO 2</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="row form-group">
+                        <div class="col-md-2">
+                            <lable>
+                                MEDIO DE TRANSPORTE:
+                            </lable>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="checkbox" ng-model="vm.Comision.avion" /> AVIÓN
+                        </div>
+                        <div class="col-md-2">
+                            <input type="checkbox" ng-model="vm.Comision.autobus" /> AUTOBÚS
+                        </div>
+                        <div class="col-md-4">
+                            <input type="checkbox" ng-model="vm.Comision.automovil" /> AUTOMÓVIL                        
+                            <div ng-hide="vm.Comision.automovil==null||vm.Comision.automovil==false">
+                                <select class="form-control" ng-model="vm.Comision.tipoAutomovil">
+                                    <option value=1 selected="selected">AUTOMÓVIL OFICIAL</option>
+                                    <option value=2>AUTOMÓVIL PARTICULAR</option>
+                                </select>
+                                <div ng-hide="vm.Comision.automovil==NULL||vm.Comision.automovil==false">
+                                    <div ng-hide="vm.Comision.tipoAutomovil!=2">
+                                        PLACAS:<input type="text" ng-required="vm.Comision.automovil==true && vm.Comision.tipoAutomovil==2" ng-model="vm.Comision.noPlacas" class="form-control" />
+                                    </div>
+                                    <div ng-hide="vm.Comision.tipoAutomovil!=1">
+                                        PLACAS:<select ng-model="vm.Comision.noPlacas" ng-required="vm.Comision.automovil==true && vm.Comision.tipoAutomovil==1" class="form-control">
+                                            <option ng-repeat="v in vm.Vehiculos" value="{{v.placa}}">{{v.placa}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label>
+                                DÍAS DE COMISIÓN:
+                            </label>
+                            <input type="number" ng-required="true" class="form-control" ng-model="vm.Comision.diasComision" ng-change="vm.CalculoMonto()" value="{{vm.DiasComision()}}" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-2">
+                            <label>
+                                HOSPEDAJE:
+                            </label>
+                            <input type="number" step="0.01" ng-required="true" ng-model="vm.Monto.hospedaje" class="form-control" />
+                        </div>
+                        <div class="col-md-2">
+                            <label>
+                                ALIMENTACIÓN:
+                            </label>
+                            <input type="number" step="0.01" ng-required="true" ng-model="vm.Monto.alimentacion" class="form-control" />
+                        </div>
+                        <div class="col-md-2">
+                            <label>
+                                AVIÓN O AUTOBUS:
+                            </label>
+                            <input type="number" step="0.01" ng-required="true" ng-model="vm.Monto.terrestre" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                COMBUSTIBLES Y LUBRICANTES:
+                            </label>
+                            <input type="number" step="0.01" ng-required="true" ng-model="vm.Monto.combustible" class="form-control" />
+                        </div>
+                        <div class="col-md-2">
+                            <label>
+                                Subtotal A:
+                            </label>
+                            <input type="number" ng-model="vm.subtotala" ng-disabled="true" value="{{vm.Monto.hospedaje+vm.Monto.alimentacion+vm.Monto.terrestre+vm.Monto.combustible}}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-4">
+
+                        </div>
+                        <div class="col-md-2">
+                            <label>
+                                PEAJE:
+                            </label>
+                            <input type="number" step="0.01" ng-required="true" ng-model="vm.Monto.peaje" class="form-control" />
+                        </div>
+                        <div class="col-md-2">
+                            <label>
+                                TRASLADOS LOCALES:
+                            </label>
+                            <input type="number" step="0.01" ng-required="true" ng-model="vm.Monto.traslados" class="form-control" />
+                        </div>
+                        <div class="col-md-2">
+                            <label>
+                                OTROS GASTOS:
+                            </label>
+                            <input type="number" step="0.01" ng-required="true" ng-model="vm.Monto.otrosGastos" class="form-control" />
+                        </div>
+                        <div class="col-md-2">
+                            <label>
+                                Subtotal B:
+                            </label>
+                            <input type="number" ng-model="vm.subtotalb" ng-disabled="true" value="{{vm.Monto.peaje+vm.Monto.traslados+vm.Monto.otrosGastos}}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-10">
+
+                        </div>
+                        <div class="col-md-2">
+                            <label>
+                                IMPORTE TOTAL (A+B):
+                            </label>
+                            <input type="number" ng-model="vm.total" ng-disabled="true" value="{{vm.Monto.hospedaje+vm.Monto.alimentacion+vm.Monto.terrestre+vm.Monto.combustible+vm.Monto.peaje+vm.Monto.traslados+vm.Monto.otrosGastos}}" class="form-control" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row form-group">
+                        <div class="col-md-10">
+
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-success form-control">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/app/controladores/ComprobacionController.js"></script>
+    <script src="~/Scripts/app/factory/ComprobacionFactory.js"></script>
+}
